@@ -1,2977 +1,2574 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Lemon Shark — Mechanical Workshop</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lemon Shark — Engineering Workshop</title>
 
 <style>
-/* =========================================================
-   LEMON SHARK — ALL CSS
-========================================================= */
-
-:root {
-    --cream: #fffdf4;
-    --paper: #fff9dc;
-    --lemon: #f8e88c;
-    --lemon-light: #fff4b7;
-    --lemon-dark: #d8bd3d;
-    --ink: #25281f;
-    --muted: #747568;
-    --line: #e9e5ce;
-    --green: #91a77f;
-    --white: #ffffff;
-    --shadow: 0 22px 70px rgba(77, 72, 34, 0.10);
-}
-
-* {
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    margin: 0;
-    color: var(--ink);
-    background: var(--cream);
-    font-family: Arial, Helvetica, sans-serif;
-    overflow-x: hidden;
-}
-
-button,
-input,
-select {
-    font: inherit;
-}
-
-button {
-    cursor: pointer;
-}
-
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-/* Background blobs */
-
-.ambient {
-    position: fixed;
-    width: 420px;
-    height: 420px;
-    border-radius: 50%;
-    filter: blur(90px);
-    opacity: .25;
-    pointer-events: none;
-    z-index: -1;
-}
-
-.ambient-one {
-    background: #f8e88c;
-    top: 0;
-    left: -220px;
-}
-
-.ambient-two {
-    background: #cfe0bd;
-    right: -220px;
-    top: 45%;
-}
-
-/* =========================================================
-   NAVBAR
-========================================================= */
-
-.nav {
-    width: min(1180px, calc(100% - 44px));
-    margin: 20px auto 0;
-    padding: 10px 12px 10px 18px;
-
-    display: flex;
-    align-items: center;
-    gap: 30px;
-
-    border: 1px solid rgba(229,224,197,.85);
-    border-radius: 18px;
-
-    background: rgba(255,253,244,.82);
-    backdrop-filter: blur(18px);
-
-    position: sticky;
-    top: 14px;
-    z-index: 20;
-}
-
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 700;
-    white-space: nowrap;
-}
-
-.brand-mark {
-    width: 35px;
-    height: 35px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 11px;
-    background: var(--lemon);
-
-    font-size: 12px;
-    font-weight: 800;
-}
-
-.nav nav {
-    display: flex;
-    gap: 27px;
-    margin: auto;
-
-    color: #696a5d;
-    font-size: 14px;
-}
-
-.nav nav a {
-    transition: .2s;
-}
-
-.nav nav a:hover {
-    color: var(--ink);
-}
-
-.nav-button,
-.primary,
-.generate {
-    border: 0;
-    background: var(--ink);
-    color: white;
-
-    border-radius: 12px;
-    padding: 12px 16px;
-
-    font-weight: 700;
-    transition: .2s;
-}
-
-.nav-button:hover,
-.primary:hover,
-.generate:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 22px rgba(37,40,31,.16);
-}
-
-/* =========================================================
-   HERO
-========================================================= */
-
-.hero {
-    width: min(1180px, calc(100% - 44px));
-    margin: 80px auto 85px;
-
-    min-height: 550px;
-
-    display: grid;
-    grid-template-columns: 1.03fr .97fr;
-
-    align-items: center;
-    gap: 70px;
-}
-
-.eyebrow,
-.section-kicker,
-.mini-label {
-    letter-spacing: .14em;
-    font-size: 11px;
-    font-weight: 700;
-    color: #85846f;
-}
-
-.eyebrow {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-}
-
-.pulse,
-.status-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #a9bc89;
-    display: inline-block;
-    box-shadow: 0 0 0 5px rgba(169,188,137,.14);
-}
-
-.hero h1 {
-    font-size: clamp(60px, 7.5vw, 105px);
-    line-height: .87;
-    letter-spacing: -.075em;
-    margin: 24px 0;
-    font-weight: 800;
-}
-
-em {
-    color: #cfb33d;
-    font-style: normal;
-}
-
-.hero-text {
-    max-width: 540px;
-
-    color: var(--muted);
-    line-height: 1.75;
-    font-size: 16px;
-}
-
-.hero-actions {
-    display: flex;
-    gap: 11px;
-    margin-top: 28px;
-}
-
-.primary {
-    padding: 15px 19px;
-}
-
-.ghost {
-    border: 1px solid var(--line);
-    background: transparent;
-
-    border-radius: 12px;
-    padding: 15px 19px;
-
-    color: var(--ink);
-    font-weight: 700;
-}
-
-.hero-note {
-    margin-top: 35px;
-    color: #9a9985;
-    font-size: 12px;
-}
-
-/* =========================================================
-   MACHINE
-========================================================= */
-
-.hero-machine {
-    position: relative;
-}
-
-.machine-glow {
-    position: absolute;
-
-    width: 340px;
-    height: 340px;
-
-    background: var(--lemon-light);
-    border-radius: 50%;
-    filter: blur(25px);
-
-    left: 50%;
-    top: 50%;
-
-    transform: translate(-50%, -50%);
-}
-
-.machine-card {
-    position: relative;
-
-    background: rgba(255,255,255,.73);
-    border: 1px solid #ece7cb;
-
-    border-radius: 28px;
-
-    box-shadow: var(--shadow);
-
-    overflow: hidden;
-
-    transform: rotate(1.5deg);
-}
-
-.machine-top {
-    padding: 17px 20px;
-
-    border-bottom: 1px solid var(--line);
-
-    display: flex;
-    gap: 9px;
-    align-items: center;
-
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: .12em;
-
-    color: #8a8978;
-}
-
-.machine-id {
-    margin-left: auto;
-    color: #b3ae91;
-}
-
-.engine-illustration {
-    height: 340px;
-    position: relative;
-    overflow: hidden;
-
-    background:
-        radial-gradient(circle at 50% 50%, #fff9d9 0 20%, transparent 48%),
-        linear-gradient(135deg,#fefcf0,#fff8c9);
-}
-
-.engine-illustration::before,
-.engine-illustration::after {
-    content: "";
-    position: absolute;
-
-    border: 1px dashed #ddd5a8;
-    border-radius: 50%;
-
-    inset: 50px 95px;
-}
-
-.engine-illustration::after {
-    inset: 90px 140px;
-}
-
-.gear {
-    position: absolute;
-
-    border-radius: 50%;
-    border: 13px dotted #c8b84e;
-
-    background: #fffce7;
-
-    box-shadow: inset 0 0 0 7px #eee5a9;
-}
-
-.gear-large {
-    width: 150px;
-    height: 150px;
-
-    left: 17%;
-    top: 23%;
-
-    animation: spin 18s linear infinite;
-}
-
-.gear-small {
-    width: 91px;
-    height: 91px;
-
-    left: 48%;
-    top: 40%;
-
-    animation: spin 11s linear infinite reverse;
-}
-
-.shaft {
-    position: absolute;
-
-    width: 230px;
-    height: 18px;
-
-    background: #b4b099;
-
-    left: 22%;
-    top: 58%;
-
-    border-radius: 20px;
-
-    transform: rotate(-16deg);
-}
-
-.piston {
-    position: absolute;
-
-    width: 26px;
-    height: 105px;
-
-    background: #c4c0a7;
-
-    border-radius: 6px;
-
-    top: 15%;
-}
-
-.piston::after {
-    content: "";
-
-    position: absolute;
-
-    width: 48px;
-    height: 30px;
-
-    left: -11px;
-    bottom: -9px;
-
-    border-radius: 7px;
-
-    background: #8d8a79;
-}
-
-.piston-one {
-    left: 60%;
-    transform: rotate(22deg);
-}
-
-.piston-two {
-    left: 72%;
-    top: 27%;
-    transform: rotate(35deg);
-}
-
-.coil {
-    position: absolute;
-
-    width: 80px;
-    height: 70px;
-
-    right: 11%;
-    bottom: 10%;
-
-    border: 7px solid #a8b49a;
-    border-radius: 50%;
-
-    border-left-color: transparent;
-
-    transform: rotate(-20deg);
-}
-
-.bolt {
-    width: 12px;
-    height: 12px;
-
-    border-radius: 50%;
-    background: #a4a18f;
-
-    position: absolute;
-}
-
-.bolt-a {
-    left: 8%;
-    top: 12%;
-}
-
-.bolt-b {
-    right: 8%;
-    top: 12%;
-}
-
-.machine-bottom {
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-
-    padding: 18px 20px;
-    gap: 10px;
-}
-
-.machine-bottom div {
-    border-right: 1px solid var(--line);
-    padding-left: 10px;
-}
-
-.machine-bottom div:last-child {
-    border: 0;
-}
-
-.machine-bottom small {
-    display: block;
-
-    color: #999785;
-    font-size: 9px;
-    letter-spacing: .1em;
-}
-
-.machine-bottom strong {
-    font-size: 17px;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* =========================================================
-   TICKER
-========================================================= */
-
-.ticker {
-    border-block: 1px solid var(--line);
-
-    padding: 18px 5%;
-
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-
-    color: #aaa78e;
-
-    font-size: 10px;
-    font-weight: 700;
-
-    letter-spacing: .15em;
-}
-
-.ticker i {
-    color: #d5be4e;
-}
-
-/* =========================================================
-   SECTIONS
-========================================================= */
-
-.section {
-    width: min(1180px, calc(100% - 44px));
-    margin: auto;
-    padding: 110px 0;
-}
-
-.section-heading {
-    display: grid;
-    grid-template-columns: 1fr .6fr;
-
-    gap: 80px;
-
-    align-items: end;
-
-    margin-bottom: 44px;
-}
-
-.section-heading h2,
-.philosophy h2 {
-    font-size: clamp(38px,5vw,64px);
-    line-height: .98;
-    letter-spacing: -.055em;
-
-    margin: 12px 0;
-}
-
-.section-heading p {
-    color: var(--muted);
-    line-height: 1.7;
-    margin: 0;
-}
-
-/* =========================================================
-   BUILDER
-========================================================= */
-
-.builder-grid {
-    display: grid;
-    grid-template-columns: .82fr 1.18fr;
-    gap: 18px;
-}
-
-.builder-panel,
-.result-panel {
-    border: 1px solid var(--line);
-
-    background: #fffef7;
-
-    border-radius: 22px;
-
-    box-shadow: 0 16px 50px rgba(70,65,30,.05);
-}
-
-.builder-panel {
-    padding: 26px;
-}
-
-.panel-title,
-.result-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.panel-title {
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: .13em;
-
-    padding-bottom: 21px;
-
-    border-bottom: 1px solid var(--line);
-}
-
-.saved {
-    color: #91a57f;
-    font-size: 9px;
-}
-
-.field {
-    display: block;
-    margin-top: 24px;
-}
-
-.field > span,
-.range-head {
-    display: flex;
-    justify-content: space-between;
-
-    font-size: 12px;
-    font-weight: 700;
-
-    margin-bottom: 9px;
-}
-
-input[type="text"],
-select {
-    width: 100%;
-
-    border: 1px solid var(--line);
-    background: white;
-
-    border-radius: 10px;
-
-    padding: 13px;
-
-    outline: none;
-
-    color: var(--ink);
-}
-
-input[type="text"]:focus,
-select:focus {
-    border-color: #d7c75f;
-}
-
-.choice-row {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-}
-
-.choice {
-    flex: 1;
-
-    min-width: 65px;
-
-    padding: 10px 8px;
-
-    border: 1px solid var(--line);
-    border-radius: 9px;
-
-    background: white;
-
-    color: #777668;
-
-    font-size: 11px;
-}
-
-.choice.active {
-    background: var(--lemon);
-
-    color: var(--ink);
-
-    border-color: #e7d66d;
-
-    font-weight: 700;
-}
-
-input[type="range"] {
-    width: 100%;
-    accent-color: #d4ba38;
-}
-
-.generate {
-    width: 100%;
-
-    margin-top: 28px;
-
-    padding: 15px;
-}
-
-/* =========================================================
-   RESULT
-========================================================= */
-
-.result-panel {
-    padding: 26px;
-}
-
-.result-header {
-    margin-bottom: 22px;
-}
-
-.result-header h3 {
-    font-size: 27px;
-
-    margin: 5px 0;
-
-    letter-spacing: -.04em;
-}
-
-.icon-button {
-    border: 1px solid var(--line);
-
-    background: white;
-
-    border-radius: 9px;
-
-    padding: 9px 12px;
-
-    color: #777;
-}
-
-.spec-card {
-    background: var(--paper);
-
-    border: 1px solid #eee3a7;
-
-    border-radius: 16px;
-
-    padding: 22px;
-}
-
-.spec-main {
-    display: flex;
-
-    gap: 20px;
-
-    align-items: center;
-}
-
-.spec-ring {
-    width: 88px;
-    height: 88px;
-
-    flex: none;
-
-    border-radius: 50%;
-
-    border: 8px solid #ebdc75;
-
-    display: grid;
-    place-content: center;
-
-    text-align: center;
-
-    font-size: 26px;
-    font-weight: 800;
-}
-
-.spec-ring small {
-    font-size: 11px;
-}
-
-.spec-main p {
-    color: #777565;
-
-    font-size: 12px;
-
-    line-height: 1.55;
-
-    margin: 7px 0 0;
-}
-
-.spec-stats {
-    display: grid;
-
-    grid-template-columns: repeat(3,1fr);
-
-    gap: 8px;
-
-    margin-top: 20px;
-
-    padding-top: 17px;
-
-    border-top: 1px solid #e9dfa7;
-}
-
-.spec-stats span {
-    display: block;
-
-    color: #9b967a;
-
-    font-size: 9px;
-
-    letter-spacing: .1em;
+:root{
+ --bg:#f7f4e8;
+ --panel:#fffdf6;
+ --line:#dedbc9;
+ --ink:#20231c;
+ --muted:#77796d;
+ --yellow:#f4df70;
+ --green:#91a77d;
+ --danger:#d97867;
+ --grid:#e9e5d3;
 }
-
-.spec-stats strong {
-    font-size: 17px;
-}
-
-.component-list {
-    margin-top: 13px;
-}
-
-.component-row {
-    display: grid;
-
-    grid-template-columns: 38px 1fr 25px;
-
-    align-items: center;
 
-    gap: 11px;
+*{box-sizing:border-box}
 
-    padding: 14px 2px;
-
-    border-bottom: 1px solid var(--line);
+html,body{
+ margin:0;
+ width:100%;
+ height:100%;
+ overflow:hidden;
 }
-
-.component-icon {
-    width: 32px;
-    height: 32px;
-
-    display: grid;
-    place-items: center;
 
-    border-radius: 9px;
-
-    background: #f5f1d9;
-
-    color: #aa983c;
+body{
+ font-family:Arial,Helvetica,sans-serif;
+ color:var(--ink);
+ background:var(--bg);
 }
 
-.component-row strong {
-    display: block;
-    font-size: 12px;
+button,input{
+ font:inherit;
 }
 
-.component-row small {
-    color: #99998a;
-    font-size: 10px;
+button{
+ cursor:pointer;
 }
-
-.component-row b {
-    color: #c5c2af;
-
-    font-size: 10px;
 
-    text-align: right;
+.app{
+ height:100vh;
+ display:grid;
+ grid-template-rows:62px 1fr;
 }
 
-/* =========================================================
-   IDEA CARDS
-========================================================= */
+/* HEADER */
 
-.cards {
-    display: grid;
-
-    grid-template-columns: repeat(3,1fr);
-
-    gap: 15px;
+header{
+ background:#fffdf7;
+ border-bottom:1px solid var(--line);
+ display:flex;
+ align-items:center;
+ padding:0 18px;
+ gap:18px;
+ z-index:20;
 }
-
-.idea-card {
-    min-height: 290px;
-
-    padding: 25px;
-
-    border: 1px solid var(--line);
-
-    border-radius: 20px;
-
-    background: #fffef8;
 
-    display: flex;
-    flex-direction: column;
-
-    transition: .25s;
+.logo{
+ display:flex;
+ align-items:center;
+ gap:9px;
+ font-weight:800;
+ white-space:nowrap;
 }
 
-.idea-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow);
+.logo b{
+ display:grid;
+ place-items:center;
+ background:var(--yellow);
+ width:35px;
+ height:35px;
+ border-radius:10px;
+ font-size:11px;
 }
 
-.idea-card.featured {
-    background: var(--lemon-light);
-    border-color: #eadc86;
+.project{
+ display:flex;
+ align-items:center;
+ gap:8px;
+ margin-left:12px;
 }
-
-.idea-icon {
-    width: 44px;
-    height: 44px;
-
-    border-radius: 13px;
-
-    background: #f3edcf;
-
-    display: grid;
-    place-items: center;
-
-    font-size: 20px;
-
-    color: #aa983d;
 
-    margin-bottom: 25px;
+.project input{
+ width:210px;
+ border:1px solid var(--line);
+ border-radius:9px;
+ padding:9px 11px;
+ background:#fff;
 }
 
-.idea-card > span {
-    font-size: 10px;
-    font-weight: 700;
-    color: #aaa78f;
+.top-actions{
+ margin-left:auto;
+ display:flex;
+ gap:7px;
 }
 
-.idea-card h3 {
-    font-size: 28px;
-    margin: 8px 0;
+.btn{
+ border:1px solid var(--line);
+ background:white;
+ border-radius:9px;
+ padding:9px 12px;
+ color:var(--ink);
+ font-weight:700;
 }
 
-.idea-card p {
-    color: #7c7c70;
-
-    font-size: 12px;
-
-    line-height: 1.65;
+.btn:hover{
+ background:#fff9d7;
 }
-
-.idea-card button {
-    border: 0;
-    background: transparent;
-
-    padding: 0;
 
-    text-align: left;
-
-    font-size: 11px;
-    font-weight: 700;
-
-    margin-top: auto;
+.btn.primary{
+ background:var(--ink);
+ color:#fff;
+ border-color:var(--ink);
 }
 
-/* =========================================================
-   BLUEPRINT
-========================================================= */
-
-.blueprint-section {
-    width: min(1280px, calc(100% - 30px));
-    padding-top: 40px;
+.btn.run{
+ background:#92aa7c;
+ color:#fff;
+ border-color:#92aa7c;
 }
-
-.blueprint {
-    border-radius: 25px;
 
-    background: #292c24;
+/* MAIN */
 
-    color: white;
-
-    overflow: hidden;
-
-    box-shadow: var(--shadow);
+.main{
+ min-height:0;
+ display:grid;
+ grid-template-columns:220px 1fr 265px;
 }
-
-.blueprint-top {
-    padding: 16px 24px;
-
-    border-bottom: 1px solid #44483a;
-
-    display: flex;
-
-    justify-content: space-between;
-
-    color: #a9ab9d;
 
-    font-size: 9px;
+/* SIDEBAR */
 
-    letter-spacing: .15em;
+.sidebar,
+.inspector{
+ background:#fffdf7;
+ overflow:auto;
 }
 
-.blueprint-body {
-    display: grid;
-
-    grid-template-columns: .9fr 1.1fr;
-
-    min-height: 430px;
+.sidebar{
+ border-right:1px solid var(--line);
+ padding:15px;
 }
 
-.blueprint-copy {
-    padding: 65px;
+.inspector{
+ border-left:1px solid var(--line);
+ padding:16px;
 }
 
-.blueprint-copy .section-kicker {
-    color: #b9baab;
+.side-title,
+.ins-title{
+ font-size:10px;
+ font-weight:800;
+ letter-spacing:.14em;
+ color:#888979;
+ margin-bottom:12px;
 }
-
-.blueprint-copy h2 {
-    font-size: clamp(38px,5vw,63px);
 
-    line-height: .98;
-
-    letter-spacing: -.055em;
-
-    margin: 17px 0;
+.category{
+ font-size:10px;
+ font-weight:800;
+ color:#aaa98e;
+ margin:18px 0 7px;
 }
-
-.blueprint-copy p {
-    max-width: 430px;
-
-    color: #b5b7aa;
 
-    line-height: 1.7;
-
-    font-size: 13px;
+.part-btn{
+ width:100%;
+ display:flex;
+ align-items:center;
+ gap:10px;
+ text-align:left;
+ border:1px solid var(--line);
+ background:#fff;
+ border-radius:10px;
+ padding:10px;
+ margin:6px 0;
+ color:var(--ink);
 }
-
-.dark-button {
-    margin-top: 20px;
-
-    border: 1px solid #5d604f;
-
-    background: #3b3e32;
-
-    color: white;
-
-    border-radius: 11px;
-
-    padding: 13px 17px;
 
-    font-weight: 700;
+.part-btn:hover{
+ border-color:#d2bf54;
+ background:#fffbea;
 }
 
-.blueprint-drawing {
-    position: relative;
-
-    background-image:
-        linear-gradient(#36392f 1px, transparent 1px),
-        linear-gradient(90deg,#36392f 1px,transparent 1px);
-
-    background-size: 30px 30px;
-
-    border-left: 1px solid #44483a;
-
-    overflow: hidden;
+.part-icon{
+ width:31px;
+ height:31px;
+ border-radius:8px;
+ background:#f7efbd;
+ display:grid;
+ place-items:center;
+ color:#a18b2e;
+ font-size:17px;
 }
-
-.drawing-circle {
-    position: absolute;
-
-    width: 290px;
-    height: 290px;
-
-    border: 1px solid #aaa;
 
-    left: 28%;
-    top: 17%;
-
-    border-radius: 50%;
+.part-btn small{
+ display:block;
+ color:#929287;
+ font-size:9px;
+ margin-top:2px;
 }
-
-.drawing-circle::after {
-    content: "";
-
-    position: absolute;
 
-    inset: 55px;
-
-    border: 1px dashed #777b6e;
-
-    border-radius: 50%;
+.hint{
+ font-size:10px;
+ line-height:1.55;
+ color:#8b8c80;
+ margin-top:14px;
+ padding:10px;
+ background:#f8f5e8;
+ border-radius:10px;
 }
-
-.drawing-gear {
-    position: absolute;
-
-    width: 120px;
-    height: 120px;
 
-    border: 15px dotted #e6d66f;
+/* WORKSPACE */
 
-    border-radius: 50%;
-
-    left: 45%;
-    top: 36%;
-
-    box-shadow: inset 0 0 0 6px #888b7b;
-
-    animation: spin 15s linear infinite;
+.workspace{
+ position:relative;
+ overflow:hidden;
+ background:#faf8ee;
 }
 
-.drawing-line {
-    position: absolute;
-
-    background: #85897a;
-
-    height: 1px;
-
-    transform-origin: left;
+#canvas{
+ position:absolute;
+ inset:0;
+ width:100%;
+ height:100%;
+ cursor:crosshair;
 }
 
-.line-one {
-    width: 190px;
-    left: 13%;
-    top: 24%;
-    transform: rotate(18deg);
+.overlay{
+ position:absolute;
+ left:15px;
+ top:15px;
+ background:#fffdf7e8;
+ border:1px solid var(--line);
+ border-radius:10px;
+ padding:8px 11px;
+ font-size:10px;
+ color:#7c7d70;
+ pointer-events:none;
 }
 
-.line-two {
-    width: 190px;
-    left: 68%;
-    top: 68%;
-    transform: rotate(-18deg);
+.help{
+ position:absolute;
+ right:15px;
+ top:15px;
+ font-size:9px;
+ color:#8c8d80;
+ background:#fffdf7d9;
+ border:1px solid var(--line);
+ border-radius:8px;
+ padding:7px 9px;
 }
 
-.line-three {
-    width: 100px;
-    left: 58%;
-    top: 22%;
-    transform: rotate(90deg);
+.zoom{
+ position:absolute;
+ right:15px;
+ bottom:15px;
+ display:flex;
+ gap:5px;
 }
-
-.annotation {
-    position: absolute;
 
-    color: #c9cabc;
-
-    font-size: 9px;
-
-    letter-spacing: .1em;
+.zoom button{
+ width:32px;
+ height:32px;
+ border:1px solid var(--line);
+ background:#fff;
+ border-radius:8px;
+ font-weight:800;
 }
 
-.a1 {
-    left: 13%;
-    top: 18%;
-}
+/* INSPECTOR */
 
-.a2 {
-    right: 10%;
-    top: 63%;
+.inspector h2{
+ font-size:20px;
+ margin:4px 0 18px;
 }
 
-.a3 {
-    left: 15%;
-    bottom: 20%;
+.empty{
+ color:#929387;
+ font-size:12px;
+ line-height:1.6;
 }
 
-.a4 {
-    right: 14%;
-    top: 20%;
+.stat-grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:7px;
+ margin:13px 0;
 }
 
-/* =========================================================
-   PHILOSOPHY
-========================================================= */
-
-.philosophy {
-    padding-bottom: 130px;
+.stat{
+ background:#f8f5e8;
+ border:1px solid #ece8d6;
+ border-radius:9px;
+ padding:9px;
 }
-
-.philosophy-grid {
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 100px;
 
-    margin-top: 40px;
-
-    align-items: start;
+.stat span{
+ display:block;
+ font-size:8px;
+ color:#929287;
+ letter-spacing:.08em;
 }
-
-.large-copy {
-    font-size: 21px;
-
-    line-height: 1.55;
 
-    color: #68695d;
-
-    max-width: 500px;
-
-    margin-top: 0;
+.stat strong{
+ font-size:15px;
 }
 
-.principles {
-    margin-top: 45px;
+label.field{
+ display:block;
+ font-size:10px;
+ font-weight:800;
+ color:#77786b;
+ margin:12px 0;
 }
-
-.principles div {
-    display: flex;
-
-    gap: 22px;
 
-    padding: 17px 0;
-
-    border-top: 1px solid var(--line);
-
-    font-size: 13px;
+.field input{
+ width:100%;
+ margin-top:6px;
+ border:1px solid var(--line);
+ border-radius:8px;
+ padding:8px;
+ background:white;
 }
-
-.principles b {
-    color: #c4ac3e;
 
-    font-size: 10px;
+.danger{
+ color:var(--danger)!important;
 }
 
-.principles span {
-    font-weight: 700;
+.runbox{
+ border-top:1px solid var(--line);
+ margin-top:15px;
+ padding-top:15px;
 }
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-footer {
-    border-top: 1px solid var(--line);
-
-    padding: 25px max(22px,calc((100% - 1180px)/2));
-
-    display: flex;
 
-    justify-content: space-between;
-
-    align-items: center;
-
-    gap: 20px;
-
-    color: #969685;
-
-    font-size: 10px;
+.status{
+ display:flex;
+ align-items:center;
+ gap:7px;
+ font-size:10px;
+ font-weight:800;
 }
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-.toast {
-    position: fixed;
-
-    bottom: 25px;
-    left: 50%;
 
-    transform: translate(-50%,20px);
-
-    opacity: 0;
-
-    pointer-events: none;
-
-    background: #292c24;
-
-    color: white;
-
-    padding: 12px 18px;
-
-    border-radius: 10px;
-
-    font-size: 12px;
-
-    transition: .3s;
-
-    z-index: 50;
+.dot{
+ width:7px;
+ height:7px;
+ border-radius:50%;
+ background:#9da092;
 }
-
-.toast.show {
-    opacity: 1;
 
-    transform: translate(-50%,0);
+.dot.on{
+ background:#7ea369;
+ box-shadow:0 0 0 5px #9ab88720;
 }
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media(max-width:850px) {
-
-    .nav nav {
-        display: none;
-    }
-
-    .nav-button {
-        margin-left: auto;
-    }
 
-    .hero {
-        grid-template-columns: 1fr;
+@media(max-width:900px){
+ .main{
+  grid-template-columns:175px 1fr;
+ }
 
-        gap: 40px;
-
-        margin-top: 55px;
-    }
-
-    .hero-machine {
-        max-width: 620px;
-
-        width: 100%;
-
-        margin: auto;
-    }
-
-    .section-heading,
-    .builder-grid,
-    .blueprint-body,
-    .philosophy-grid {
-        grid-template-columns: 1fr;
-
-        gap: 30px;
-    }
-
-    .cards {
-        grid-template-columns: 1fr;
-    }
-
-    .section-heading {
-        margin-bottom: 30px;
-    }
-
-    .blueprint-copy {
-        padding: 45px 30px;
-    }
-
-    .blueprint-drawing {
-        min-height: 360px;
-
-        border-left: 0;
-
-        border-top: 1px solid #44483a;
-    }
-
-    .ticker {
-        overflow: hidden;
-
-        gap: 28px;
-
-        justify-content: flex-start;
-
-        white-space: nowrap;
-    }
+ .inspector{
+  display:none;
+ }
 }
-
-@media(max-width:520px) {
-
-    .nav {
-        width: calc(100% - 24px);
-    }
-
-    .hero,
-    .section {
-        width: calc(100% - 28px);
-    }
-
-    .hero h1 {
-        font-size: 60px;
-    }
-
-    .hero-actions {
-        flex-direction: column;
-    }
-
-    .hero-actions button {
-        width: 100%;
-    }
-
-    .machine-bottom {
-        grid-template-columns: 1fr;
-    }
-
-    .machine-bottom div {
-        border-right: 0;
-
-        border-bottom: 1px solid var(--line);
-
-        padding: 7px 0;
-    }
-
-    .spec-main {
-        align-items: flex-start;
-    }
-
-    .spec-stats {
-        grid-template-columns: 1fr;
-    }
-
-    footer {
-        flex-direction: column;
 
-        align-items: flex-start;
-    }
+@media(max-width:600px){
+ .sidebar{
+  display:none;
+ }
 
-    .blueprint-section {
-        width: calc(100% - 18px);
-    }
+ .project{
+  display:none;
+ }
 }
 </style>
 </head>
 
 <body>
 
-<div class="ambient ambient-one"></div>
-<div class="ambient ambient-two"></div>
+<div class="app">
 
-<!-- =====================================================
-     NAVIGATION
-===================================================== -->
+<header>
 
-<header class="nav">
+<div class="logo">
+ <b>LS</b>
+ <span>Lemon Shark</span>
+</div>
 
-    <a class="brand" href="#">
-        <span class="brand-mark">LS</span>
-        <span>Lemon Shark</span>
-    </a>
+<div class="project">
+ <span style="font-size:10px;color:#898a7c">
+ PROJECT
+ </span>
 
-    <nav>
-        <a href="#workshop">Workshop</a>
-        <a href="#engines">Builds</a>
-        <a href="#blueprints">Blueprints</a>
-        <a href="#about">About</a>
-    </nav>
+ <input id="projectName" value="My First Machine">
+</div>
 
-    <button class="nav-button" onclick="scrollToBuilder()">
-        Open Workshop ↗
-    </button>
+<div class="top-actions">
+
+<button class="btn" onclick="newProject()">
+ New
+</button>
+
+<button class="btn" onclick="saveProject()">
+ Save
+</button>
+
+<button class="btn" onclick="loadProject()">
+ Load
+</button>
+
+<button class="btn" onclick="clearAll()">
+ Clear
+</button>
+
+<button class="btn run" id="runBtn" onclick="toggleRun()">
+ ▶ Run Machine
+</button>
+
+</div>
 
 </header>
 
 
-<main>
+<div class="main">
 
-<!-- =====================================================
-     HERO
-===================================================== -->
+<!-- PART LIBRARY -->
 
-<section class="hero">
+<aside class="sidebar">
 
-    <div class="hero-copy">
-
-        <div class="eyebrow">
-            <span class="pulse"></span>
-            CALM ENGINEERING LAB
-        </div>
-
-        <h1>
-            Build it.<br>
-            <em>Make it move.</em>
-        </h1>
-
-        <p class="hero-text">
-            A peaceful digital workshop for inventing engines,
-            machines, mechanisms, tools, vehicles, and wonderfully
-            strange things.
-        </p>
-
-        <div class="hero-actions">
-
-            <button class="primary" onclick="scrollToBuilder()">
-                Start designing →
-            </button>
-
-            <button class="ghost" onclick="scrollToSection('blueprints')">
-                View blueprints
-            </button>
-
-        </div>
-
-        <div class="hero-note">
-            ⌁ From first sketch to working mechanism.
-        </div>
-
-    </div>
-
-
-    <!-- ENGINE GRAPHIC -->
-
-    <div class="hero-machine">
-
-        <div class="machine-glow"></div>
-
-        <div class="machine-card">
-
-            <div class="machine-top">
-
-                <span class="status-dot"></span>
-
-                <span>WORKSHOP CORE</span>
-
-                <span class="machine-id">
-                    LS-001
-                </span>
-
-            </div>
-
-            <div class="engine-illustration">
-
-                <div class="gear gear-large"></div>
-
-                <div class="gear gear-small"></div>
-
-                <div class="piston piston-one"></div>
-
-                <div class="piston piston-two"></div>
-
-                <div class="shaft"></div>
-
-                <div class="coil"></div>
-
-                <div class="bolt bolt-a"></div>
-
-                <div class="bolt bolt-b"></div>
-
-            </div>
-
-            <div class="machine-bottom">
-
-                <div>
-                    <small>TORQUE</small>
-                    <strong>284 Nm</strong>
-                </div>
-
-                <div>
-                    <small>RPM</small>
-                    <strong>3,240</strong>
-                </div>
-
-                <div>
-                    <small>EFFICIENCY</small>
-                    <strong>91.8%</strong>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     TICKER
-===================================================== -->
-
-<div class="ticker">
-
-    <span>MECHANICAL DESIGN</span>
-    <i>✦</i>
-
-    <span>ENGINE BUILDING</span>
-    <i>✦</i>
-
-    <span>PROTOTYPING</span>
-    <i>✦</i>
-
-    <span>FREEFORM INVENTION</span>
-    <i>✦</i>
-
-    <span>MECHANICAL DESIGN</span>
-
+<div class="side-title">
+ PARTS LIBRARY
 </div>
 
 
-<!-- =====================================================
-     WORKSHOP
-===================================================== -->
+<div class="category">
+ POWER
+</div>
+
+<button class="part-btn" onclick="addPart('motor')">
+ <span class="part-icon">⚡</span>
+ <span>
+  <b>Motor</b>
+  <small>Rotary power source</small>
+ </span>
+</button>
+
+<button class="part-btn" onclick="addPart('engine')">
+ <span class="part-icon">▦</span>
+ <span>
+  <b>Engine</b>
+  <small>Combustion source</small>
+ </span>
+</button>
+
+
+<div class="category">
+ ROTARY
+</div>
+
+<button class="part-btn" onclick="addPart('gear')">
+ <span class="part-icon">⚙</span>
+ <span>
+  <b>Gear</b>
+  <small>Transfers rotation</small>
+ </span>
+</button>
+
+<button class="part-btn" onclick="addPart('shaft')">
+ <span class="part-icon">━</span>
+ <span>
+  <b>Shaft</b>
+  <small>Connects components</small>
+ </span>
+</button>
 
-<section id="workshop" class="section workshop">
+<button class="part-btn" onclick="addPart('wheel')">
+ <span class="part-icon">◉</span>
+ <span>
+  <b>Wheel</b>
+  <small>Output / load</small>
+ </span>
+</button>
 
-    <div class="section-heading">
+
+<div class="category">
+ MECHANISMS
+</div>
 
-        <div>
+<button class="part-btn" onclick="addPart('piston')">
+ <span class="part-icon">▥</span>
+ <span>
+  <b>Piston</b>
+  <small>Linear actuator</small>
+ </span>
+</button>
 
-            <span class="section-kicker">
-                01 / WORKSHOP
-            </span>
+<button class="part-btn" onclick="addPart('bearing')">
+ <span class="part-icon">◎</span>
+ <span>
+  <b>Bearing</b>
+  <small>Supports a shaft</small>
+ </span>
+</button>
 
-            <h2>
-                Your bench is ready.
-            </h2>
+<button class="part-btn" onclick="addPart('spring')">
+ <span class="part-icon">∿</span>
+ <span>
+  <b>Spring</b>
+  <small>Stores energy</small>
+ </span>
+</button>
 
-        </div>
 
-        <p>
-            Choose a starting point, tune the parts,
-            and let Lemon Shark calculate a rough
-            concept for you.
-        </p>
+<div class="category">
+ ELECTRICAL
+</div>
 
-    </div>
+<button class="part-btn" onclick="addPart('battery')">
+ <span class="part-icon">▣</span>
+ <span>
+  <b>Battery</b>
+  <small>Electrical source</small>
+ </span>
+</button>
 
+<button class="part-btn" onclick="addPart('generator')">
+ <span class="part-icon">✦</span>
+ <span>
+  <b>Generator</b>
+  <small>Mechanical → electrical</small>
+ </span>
+</button>
 
-    <div class="builder-grid">
 
+<div class="hint">
 
-        <!-- BUILDER PANEL -->
+<b>Build</b><br>
+Click a part to add it.
 
-        <div class="builder-panel">
+<br><br>
 
-            <div class="panel-title">
+<b>Move</b><br>
+Drag a component.
 
-                <span>
-                    PROJECT BUILDER
-                </span>
+<br><br>
 
-                <span id="projectStatus" class="saved">
-                    ● READY
-                </span>
+<b>Connect</b><br>
+Drag from one port to another.
 
-            </div>
+<br><br>
 
+<b>Select</b><br>
+Click a component.
 
-            <label class="field">
+<br><br>
 
-                <span>
-                    Project name
-                </span>
+<b>Delete</b><br>
+Press Delete.
 
-                <input
-                    id="projectName"
-                    type="text"
-                    value="Lemon Prototype 01"
-                    maxlength="40"
-                >
+<br><br>
 
-            </label>
+<b>Rotate</b><br>
+Press R.
 
+</div>
 
-            <label class="field">
+</aside>
 
-                <span>
-                    Machine type
-                </span>
 
-                <select id="machineType">
+<!-- WORKBENCH -->
 
-                    <option value="engine">
-                        Combustion Engine
-                    </option>
+<main class="workspace" id="workspace">
 
-                    <option value="electric">
-                        Electric Motor
-                    </option>
+<canvas id="canvas"></canvas>
 
-                    <option value="turbine">
-                        Compact Turbine
-                    </option>
+<div class="overlay">
+ WORKBENCH ·
+ <b id="machineState">STOPPED</b>
+</div>
 
-                    <option value="robot">
-                        Robotic Mechanism
-                    </option>
+<div class="help">
+ Drag parts · Connect ports · Press R to rotate
+</div>
 
-                    <option value="vehicle">
-                        Vehicle System
-                    </option>
+<div class="zoom">
 
-                    <option value="custom">
-                        Something Else
-                    </option>
+<button onclick="zoom(-.1)">
+ −
+</button>
 
-                </select>
+<button onclick="resetView()">
+ ⌂
+</button>
 
-            </label>
+<button onclick="zoom(.1)">
+ +
+</button>
 
-
-            <div class="field">
-
-                <span>
-                    Power source
-                </span>
-
-                <div class="choice-row">
-
-                    <button
-                        class="choice active"
-                        data-value="petrol">
-                        Petrol
-                    </button>
-
-                    <button
-                        class="choice"
-                        data-value="battery">
-                        Battery
-                    </button>
-
-                    <button
-                        class="choice"
-                        data-value="hybrid">
-                        Hybrid
-                    </button>
-
-                    <button
-                        class="choice"
-                        data-value="steam">
-                        Steam
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <div class="field">
-
-                <div class="range-head">
-
-                    <span>
-                        Complexity
-                    </span>
-
-                    <strong id="complexityValue">
-                        62%
-                    </strong>
-
-                </div>
-
-                <input
-                    id="complexity"
-                    type="range"
-                    min="10"
-                    max="100"
-                    value="62"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <div class="range-head">
-
-                    <span>
-                        Power target
-                    </span>
-
-                    <strong>
-                        <span id="powerValue">180</span>
-                        kW
-                    </strong>
-
-                </div>
-
-                <input
-                    id="power"
-                    type="range"
-                    min="10"
-                    max="800"
-                    value="180"
-                >
-
-            </div>
-
-
-            <button
-                class="generate"
-                id="generateBtn">
-
-                Generate concept ✦
-
-            </button>
-
-        </div>
-
-
-        <!-- RESULTS -->
-
-        <div class="result-panel">
-
-            <div class="result-header">
-
-                <div>
-
-                    <span class="mini-label">
-                        CONCEPT OUTPUT
-                    </span>
-
-                    <h3 id="outputTitle">
-                        Lemon Prototype 01
-                    </h3>
-
-                </div>
-
-                <button
-                    class="icon-button"
-                    onclick="copyConcept()">
-
-                    ⧉
-
-                </button>
-
-            </div>
-
-
-            <div class="spec-card">
-
-                <div class="spec-main">
-
-                    <div class="spec-ring">
-
-                        <span id="efficiency">
-                            91
-                        </span>
-
-                        <small>%</small>
-
-                    </div>
-
-                    <div>
-
-                        <span class="mini-label">
-                            EST. EFFICIENCY
-                        </span>
-
-                        <p id="conceptText">
-                            Balanced four-cylinder concept with
-                            a smooth power curve and
-                            workshop-friendly architecture.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="spec-stats">
-
-                    <div>
-
-                        <span>OUTPUT</span>
-
-                        <strong id="outputPower">
-                            180 kW
-                        </strong>
-
-                    </div>
-
-                    <div>
-
-                        <span>TORQUE</span>
-
-                        <strong id="outputTorque">
-                            392 Nm
-                        </strong>
-
-                    </div>
-
-                    <div>
-
-                        <span>RPM</span>
-
-                        <strong id="outputRpm">
-                            4,860
-                        </strong>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="component-list">
-
-                <div class="component-row">
-
-                    <span class="component-icon">
-                        ◉
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Core architecture
-                        </strong>
-
-                        <small id="architecture">
-                            Inline 4 · balanced crank
-                        </small>
-
-                    </div>
-
-                    <b>01</b>
-
-                </div>
-
-
-                <div class="component-row">
-
-                    <span class="component-icon">
-                        ◈
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Power delivery
-                        </strong>
-
-                        <small id="delivery">
-                            Progressive belt drive
-                        </small>
-
-                    </div>
-
-                    <b>02</b>
-
-                </div>
-
-
-                <div class="component-row">
-
-                    <span class="component-icon">
-                        ⌁
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Cooling system
-                        </strong>
-
-                        <small id="cooling">
-                            Liquid loop · twin radiator
-                        </small>
-
-                    </div>
-
-                    <b>03</b>
-
-                </div>
-
-
-                <div class="component-row">
-
-                    <span class="component-icon">
-                        ✧
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Control system
-                        </strong>
-
-                        <small id="control">
-                            Adaptive electronic governor
-                        </small>
-
-                    </div>
-
-                    <b>04</b>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     BUILD TYPES
-===================================================== -->
-
-<section id="engines" class="section">
-
-    <div class="section-heading">
-
-        <div>
-
-            <span class="section-kicker">
-                02 / BUILD LIBRARY
-            </span>
-
-            <h2>
-                Start with anything.
-            </h2>
-
-        </div>
-
-        <p>
-            Use a proven family or throw the rules out
-            and make your own.
-        </p>
-
-    </div>
-
-
-    <div class="cards">
-
-
-        <article class="idea-card">
-
-            <div class="idea-icon">
-                ◎
-            </div>
-
-            <span>01</span>
-
-            <h3>
-                Engines
-            </h3>
-
-            <p>
-                Inline, V, rotary, electric, hybrid,
-                turbine — tune the architecture around
-                the job.
-            </p>
-
-            <button onclick="quickBuild('engine')">
-                Build engine →
-            </button>
-
-        </article>
-
-
-        <article class="idea-card featured">
-
-            <div class="idea-icon">
-                ◇
-            </div>
-
-            <span>02</span>
-
-            <h3>
-                Machines
-            </h3>
-
-            <p>
-                Design mechanisms, robots, tools,
-                transmissions, pumps, arms, linkages,
-                and more.
-            </p>
-
-            <button onclick="quickBuild('robot')">
-                Build machine →
-            </button>
-
-        </article>
-
-
-        <article class="idea-card">
-
-            <div class="idea-icon">
-                ✦
-            </div>
-
-            <span>03</span>
-
-            <h3>
-                Anything
-            </h3>
-
-            <p>
-                Start with a blank bench. Give the
-                invention a purpose and see where
-                the mechanism goes.
-            </p>
-
-            <button onclick="quickBuild('custom')">
-                Go wild →
-            </button>
-
-        </article>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     BLUEPRINT
-===================================================== -->
-
-<section id="blueprints" class="section blueprint-section">
-
-    <div class="blueprint">
-
-        <div class="blueprint-top">
-
-            <span>
-                LEMON SHARK / BLUEPRINT 004
-            </span>
-
-            <span>
-                REV. 2.4
-            </span>
-
-        </div>
-
-
-        <div class="blueprint-body">
-
-            <div class="blueprint-copy">
-
-                <span class="section-kicker">
-                    03 / BLUEPRINTS
-                </span>
-
-                <h2>
-                    Every great machine
-                    starts as a weird idea.
-                </h2>
-
-                <p>
-                    Keep the sketches rough. Test the impossible.
-                    Refine only after you know what you want
-                    the machine to feel like.
-                </p>
-
-                <button
-                    class="dark-button"
-                    onclick="downloadBlueprint()">
-
-                    Save blueprint ↓
-
-                </button>
-
-            </div>
-
-
-            <div class="blueprint-drawing">
-
-                <div class="drawing-circle"></div>
-
-                <div class="drawing-gear"></div>
-
-                <div class="drawing-line line-one"></div>
-                <div class="drawing-line line-two"></div>
-                <div class="drawing-line line-three"></div>
-
-                <span class="annotation a1">
-                    Ø 86.4
-                </span>
-
-                <span class="annotation a2">
-                    12.8°
-                </span>
-
-                <span class="annotation a3">
-                    4 × M8
-                </span>
-
-                <span class="annotation a4">
-                    SHAFT A
-                </span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     ABOUT
-===================================================== -->
-
-<section id="about" class="section philosophy">
-
-    <span class="section-kicker">
-        04 / THE SHOP
-    </span>
-
-    <div class="philosophy-grid">
-
-        <h2>
-            Serious about<br>
-            <em>making things.</em>
-        </h2>
-
-
-        <div>
-
-            <p class="large-copy">
-
-                Lemon Shark is a fictional mechanical
-                workshop built around one simple idea:
-                engineering should feel curious, calm,
-                and fun.
-
-            </p>
-
-
-            <div class="principles">
-
-                <div>
-                    <b>01</b>
-                    <span>
-                        Question everything.
-                    </span>
-                </div>
-
-                <div>
-                    <b>02</b>
-                    <span>
-                        Build before perfecting.
-                    </span>
-                </div>
-
-                <div>
-                    <b>03</b>
-                    <span>
-                        Leave room for weird.
-                    </span>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
+</div>
 
 </main>
 
 
-<!-- =====================================================
-     FOOTER
-===================================================== -->
+<!-- INSPECTOR -->
 
-<footer>
+<aside class="inspector">
 
-    <div class="brand">
+<div class="ins-title">
+ INSPECTOR
+</div>
 
-        <span class="brand-mark">
-            LS
-        </span>
+<div id="inspectorContent" class="empty">
 
-        <span>
-            Lemon Shark
-        </span>
+Select a component to inspect and tune it.
 
-    </div>
-
-    <span>
-        © 2026 Lemon Shark Workshop
-    </span>
-
-    <span>
-        Made for curious engineers.
-    </span>
-
-</footer>
+</div>
 
 
-<div id="toast" class="toast">
-    Concept copied to clipboard.
+<div class="runbox">
+
+<div class="status">
+ <span id="runDot" class="dot"></span>
+ <span id="runText">
+  Machine offline
+ </span>
+</div>
+
+<div class="stat-grid">
+
+<div class="stat">
+ <span>RPM</span>
+ <strong id="rpm">0</strong>
+</div>
+
+<div class="stat">
+ <span>TORQUE</span>
+ <strong id="torque">0 Nm</strong>
+</div>
+
+<div class="stat">
+ <span>POWER</span>
+ <strong id="powerOut">0 kW</strong>
+</div>
+
+<div class="stat">
+ <span>EFFICIENCY</span>
+ <strong id="eff">0%</strong>
+</div>
+
+</div>
+
+</div>
+
+</aside>
+
+</div>
 </div>
 
 
 <script>
 
-/* =========================================================
-   LEMON SHARK — ALL JAVASCRIPT
-========================================================= */
+const canvas =
+ document.getElementById("canvas");
 
-const $ = id => document.getElementById(id);
+const ctx =
+ canvas.getContext("2d");
 
-
-/* ---------------------------------------------------------
-   MACHINE DATA
---------------------------------------------------------- */
-
-const machineData = {
-
-    engine: {
-
-        architectures: [
-            "Inline 4 · balanced crank",
-            "V6 · compact crankcase",
-            "Flat 4 · low center of mass",
-            "Inline 3 · lightweight crank"
-        ],
-
-        delivery: [
-            "Progressive belt drive",
-            "Direct gear reduction",
-            "Dual-stage transmission"
-        ],
-
-        cooling: [
-            "Liquid loop · twin radiator",
-            "Liquid loop · compact radiator",
-            "Air-cooled · fin stack"
-        ],
-
-        control: [
-            "Adaptive electronic governor",
-            "Mechanical governor",
-            "Closed-loop ECU"
-        ],
-
-        baseTorque: 2.15,
-
-        rpm: 4860,
-
-        text:
-            "Balanced combustion architecture with a smooth power curve and workshop-friendly packaging."
-
-    },
+const workspace =
+ document.getElementById("workspace");
 
 
-    electric: {
+let W,H,dpr=1;
 
-        architectures: [
-            "Axial-flux · dual stator",
-            "Radial-flux · single rotor",
-            "Dual-motor · torque vectoring"
-        ],
+let parts=[];
+let connections=[];
 
-        delivery: [
-            "Direct shaft drive",
-            "Single-speed reduction",
-            "Two-stage reduction"
-        ],
+let selected=null;
+let drag=null;
+let connecting=null;
 
-        cooling: [
-            "Liquid stator cooling",
-            "Oil-cooled rotor",
-            "Liquid loop · plate exchanger"
-        ],
+let uid=1;
 
-        control: [
-            "Field-oriented controller",
-            "Adaptive inverter",
-            "Torque-vector controller"
-        ],
+let running=false;
 
-        baseTorque: 2.8,
+let scale=1;
 
-        rpm: 7200,
-
-        text:
-            "Quiet high-torque motor concept designed around simple service access and responsive control."
-
-    },
+let offset={
+ x:0,
+ y:0
+};
 
 
-    turbine: {
-
-        architectures: [
-            "Single-spool microturbine",
-            "Twin-spool compact turbine",
-            "Radial inflow turbine"
-        ],
-
-        delivery: [
-            "Direct shaft drive",
-            "Reduction gearbox",
-            "Free turbine output"
-        ],
-
-        cooling: [
-            "Regenerative air loop",
-            "Liquid bearing cooling",
-            "Ceramic heat shield"
-        ],
-
-        control: [
-            "Digital fuel governor",
-            "Adaptive speed governor",
-            "Closed-loop turbine ECU"
-        ],
-
-        baseTorque: 1.35,
-
-        rpm: 12500,
-
-        text:
-            "Compact turbine concept prioritizing smooth rotational power, thermal management, and modularity."
-
-    },
+let simTime=0;
 
 
-    robot: {
+/* PART DEFINITIONS */
 
-        architectures: [
-            "Four-bar linkage",
-            "Six-axis articulated arm",
-            "Parallel delta mechanism",
-            "Modular linear actuator"
-        ],
+const types={
 
-        delivery: [
-            "Planetary gearbox",
-            "Timing-belt reduction",
-            "Harmonic drive"
-        ],
+ motor:{
+  name:"Motor",
+  icon:"⚡",
+  w:105,
+  h:70,
+  color:"#f5df72",
+  rpm:3000,
+  torque:120,
+  ports:["out"]
+ },
 
-        cooling: [
-            "Passive aluminum frame",
-            "Liquid motor loop",
-            "Forced-air duct"
-        ],
+ engine:{
+  name:"Engine",
+  icon:"▦",
+  w:115,
+  h:82,
+  color:"#e7d06a",
+  rpm:2400,
+  torque:220,
+  ports:["out"]
+ },
 
-        control: [
-            "Adaptive motion controller",
-            "PID servo controller",
-            "Vision-assisted controller"
-        ],
+ gear:{
+  name:"Gear",
+  icon:"⚙",
+  w:82,
+  h:82,
+  color:"#e8dc91",
+  ratio:2,
+  ports:["in","out"]
+ },
 
-        baseTorque: 3.15,
+ shaft:{
+  name:"Shaft",
+  icon:"━",
+  w:120,
+  h:34,
+  color:"#d7d2b9",
+  ports:["in","out"]
+ },
 
-        rpm: 3600,
+ wheel:{
+  name:"Wheel",
+  icon:"◉",
+  w:88,
+  h:88,
+  color:"#c8c4ad",
+  load:1.2,
+  ports:["in"]
+ },
 
-        text:
-            "A modular robotic mechanism with deliberately accessible joints, adjustable gearing, and calm motion."
+ piston:{
+  name:"Piston",
+  icon:"▥",
+  w:78,
+  h:105,
+  color:"#d9d4bd",
+  ports:["in","out"]
+ },
 
-    },
+ bearing:{
+  name:"Bearing",
+  icon:"◎",
+  w:66,
+  h:66,
+  color:"#cfcbb5",
+  ports:["in","out"]
+ },
 
+ spring:{
+  name:"Spring",
+  icon:"∿",
+  w:90,
+  h:60,
+  color:"#b7c69e",
+  ports:["in","out"]
+ },
 
-    vehicle: {
+ battery:{
+  name:"Battery",
+  icon:"▣",
+  w:90,
+  h:68,
+  color:"#f0df8a",
+  rpm:0,
+  torque:0,
+  ports:["out"]
+ },
 
-        architectures: [
-            "Rear-wheel drive powertrain",
-            "Compact AWD module",
-            "Front transaxle"
-        ],
-
-        delivery: [
-            "Two-speed reduction",
-            "Six-speed gearbox",
-            "Single-speed direct drive"
-        ],
-
-        cooling: [
-            "Liquid loop · front radiator",
-            "Dual-loop cooling",
-            "Compact thermal module"
-        ],
-
-        control: [
-            "Traction-aware controller",
-            "Adaptive ECU",
-            "Torque-vector controller"
-        ],
-
-        baseTorque: 2.55,
-
-        rpm: 5100,
-
-        text:
-            "Vehicle-ready power system balancing packaging, usable torque, thermal headroom, and serviceability."
-
-    },
-
-
-    custom: {
-
-        architectures: [
-            "Modular experimental core",
-            "Hybrid mechanical assembly",
-            "Custom freeform mechanism",
-            "Interchangeable drive module"
-        ],
-
-        delivery: [
-            "User-defined gearing",
-            "Modular belt drive",
-            "Direct mechanical coupling"
-        ],
-
-        cooling: [
-            "Passive thermal frame",
-            "Liquid loop",
-            "Forced-air duct"
-        ],
-
-        control: [
-            "Open-loop control",
-            "Adaptive controller",
-            "Manual/mechanical control"
-        ],
-
-        baseTorque: 2,
-
-        rpm: 4200,
-
-        text:
-            "A blank-sheet mechanism. There are no assumptions about what it should be — only what you want it to do."
-
-    }
+ generator:{
+  name:"Generator",
+  icon:"✦",
+  w:105,
+  h:75,
+  color:"#b7c69e",
+  ports:["in","out"]
+ }
 
 };
 
 
-/* ---------------------------------------------------------
-   GLOBAL STATE
---------------------------------------------------------- */
+/* RESIZE */
 
-let powerSource = "petrol";
+function resize(){
 
+ dpr=devicePixelRatio||1;
 
-/* ---------------------------------------------------------
-   NAVIGATION
---------------------------------------------------------- */
+ W=workspace.clientWidth;
+ H=workspace.clientHeight;
 
-function scrollToBuilder() {
+ canvas.width=W*dpr;
+ canvas.height=H*dpr;
 
-    document
-        .getElementById("workshop")
-        .scrollIntoView({
-            behavior: "smooth"
-        });
+ canvas.style.width=W+"px";
+ canvas.style.height=H+"px";
 
+ ctx.setTransform(
+  dpr,0,0,dpr,0,0
+ );
+
+ draw();
 }
 
-function scrollToSection(id) {
-
-    document
-        .getElementById(id)
-        .scrollIntoView({
-            behavior: "smooth"
-        });
-
-}
-
-
-/* ---------------------------------------------------------
-   POWER SOURCE BUTTONS
---------------------------------------------------------- */
-
-document
-    .querySelectorAll(".choice")
-    .forEach(button => {
-
-        button.addEventListener("click", () => {
-
-            document
-                .querySelectorAll(".choice")
-                .forEach(b => {
-                    b.classList.remove("active");
-                });
-
-            button.classList.add("active");
-
-            powerSource = button.dataset.value;
-
-            generateConcept();
-
-        });
-
-    });
-
-
-/* ---------------------------------------------------------
-   SLIDERS
---------------------------------------------------------- */
-
-$("complexity").addEventListener(
-    "input",
-    event => {
-
-        $("complexityValue").textContent =
-            event.target.value + "%";
-
-        generateConcept();
-
-    }
+window.addEventListener(
+ "resize",
+ resize
 );
 
 
-$("power").addEventListener(
-    "input",
-    event => {
+/* COORDINATES */
 
-        $("powerValue").textContent =
-            event.target.value;
+function screenToWorld(x,y){
 
-        generateConcept();
+ return {
+  x:(x-offset.x)/scale,
+  y:(y-offset.y)/scale
+ };
 
-    }
+}
+
+
+function worldToScreen(x,y){
+
+ return {
+  x:x*scale+offset.x,
+  y:y*scale+offset.y
+ };
+
+}
+
+
+/* ADD PART */
+
+function addPart(
+ type,
+ x=W/2/scale-offset.x/scale,
+ y=H/2/scale-offset.y/scale
+){
+
+ const t=types[type];
+
+ const p={
+
+  id:uid++,
+
+  type,
+
+  x:x-t.w/2,
+  y:y-t.h/2,
+
+  rot:0,
+
+  settings:{
+   ratio:t.ratio||1,
+   rpm:t.rpm||0,
+   torque:t.torque||0
+  }
+
+ };
+
+ parts.push(p);
+
+ selected=p;
+
+ draw();
+
+ updateInspector();
+
+}
+
+
+/* PORT POSITION */
+
+function portPosition(p,port){
+
+ const t=types[p.type];
+
+ const local={
+  in:{
+   x:0,
+   y:t.h/2
+  },
+
+  out:{
+   x:t.w,
+   y:t.h/2
+  }
+ }[port] || {
+  x:t.w/2,
+  y:0
+ };
+
+ const cx=t.w/2;
+ const cy=t.h/2;
+
+ const dx=local.x-cx;
+ const dy=local.y-cy;
+
+ const a=p.rot*Math.PI/180;
+
+ return {
+
+  x:
+   p.x+
+   cx+
+   dx*Math.cos(a)-
+   dy*Math.sin(a),
+
+  y:
+   p.y+
+   cy+
+   dx*Math.sin(a)+
+   dy*Math.cos(a)
+
+ };
+
+}
+
+
+/* HIT TEST */
+
+function pointInPart(p,x,y){
+
+ const t=types[p.type];
+
+ const c=
+  worldToScreen(
+   p.x+t.w/2,
+   p.y+t.h/2
+  );
+
+ const a=
+  -p.rot*Math.PI/180;
+
+ const dx=x-c.x;
+ const dy=y-c.y;
+
+ const rx=
+  dx*Math.cos(a)-
+  dy*Math.sin(a);
+
+ const ry=
+  dx*Math.sin(a)+
+  dy*Math.cos(a);
+
+ return(
+  Math.abs(rx)<=t.w*scale/2 &&
+  Math.abs(ry)<=t.h*scale/2
+ );
+
+}
+
+
+/* FIND PORT */
+
+function nearestPort(x,y){
+
+ let best=null;
+
+ let bd=18/scale;
+
+ for(const p of parts){
+
+  for(const port of types[p.type].ports){
+
+   const q=
+    portPosition(p,port);
+
+   const dx=q.x-x;
+   const dy=q.y-y;
+
+   const d=Math.hypot(dx,dy);
+
+   if(d<bd){
+
+    bd=d;
+
+    best={
+     p,
+     port
+    };
+
+   }
+
+  }
+
+ }
+
+ return best;
+
+}
+
+
+/* DRAW */
+
+function draw(){
+
+ ctx.clearRect(
+  0,0,W,H
+ );
+
+ ctx.fillStyle="#faf8ee";
+
+ ctx.fillRect(
+  0,0,W,H
+ );
+
+
+ ctx.save();
+
+ ctx.translate(
+  offset.x,
+  offset.y
+ );
+
+ ctx.scale(
+  scale,
+  scale
+ );
+
+
+ /* GRID */
+
+ const step=40;
+
+ ctx.strokeStyle="#e9e5d3";
+
+ ctx.lineWidth=1/scale;
+
+ const sx=
+  Math.floor(
+   (-offset.x/scale)/step
+  )*step;
+
+ const sy=
+  Math.floor(
+   (-offset.y/scale)/step
+  )*step;
+
+
+ for(
+  let x=sx;
+  x<W/scale-offset.x/scale+step;
+  x+=step
+ ){
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+   x,
+   -offset.y/scale
+  );
+
+  ctx.lineTo(
+   x,
+   H/scale-offset.y/scale
+  );
+
+  ctx.stroke();
+
+ }
+
+
+ for(
+  let y=sy;
+  y<H/scale-offset.y/scale+step;
+  y+=step
+ ){
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+   -offset.x/scale,
+   y
+  );
+
+  ctx.lineTo(
+   W/scale-offset.x/scale,
+   y
+  );
+
+  ctx.stroke();
+
+ }
+
+
+ /* CONNECTIONS */
+
+ for(const c of connections){
+
+  const a=
+   portPosition(
+    c.a,
+    c.ap
+   );
+
+  const b=
+   portPosition(
+    c.b,
+    c.bp
+   );
+
+  ctx.strokeStyle=
+   running
+    ? "#95ad7e"
+    : "#b7b49f";
+
+  ctx.lineWidth=4/scale;
+
+  ctx.lineCap="round";
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+   a.x,
+   a.y
+  );
+
+  const mx=
+   (a.x+b.x)/2;
+
+  ctx.bezierCurveTo(
+   mx,a.y,
+   mx,b.y,
+   b.x,b.y
+  );
+
+  ctx.stroke();
+
+
+  ctx.fillStyle=
+   running
+    ? "#91aa79"
+    : "#d0bd55";
+
+  ctx.beginPath();
+
+  ctx.arc(
+   a.x,
+   a.y,
+   4/scale,
+   0,
+   Math.PI*2
+  );
+
+  ctx.fill();
+
+
+  ctx.beginPath();
+
+  ctx.arc(
+   b.x,
+   b.y,
+   4/scale,
+   0,
+   Math.PI*2
+  );
+
+  ctx.fill();
+
+ }
+
+
+ /* LIVE CONNECTION */
+
+ if(connecting){
+
+  const a=
+   portPosition(
+    connecting.p,
+    connecting.port
+   );
+
+  const b=
+   screenToWorld(
+    connecting.mx,
+    connecting.my
+   );
+
+  ctx.strokeStyle="#c9b74d";
+
+  ctx.setLineDash([
+   7/scale,
+   7/scale
+  ]);
+
+  ctx.lineWidth=3/scale;
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+   a.x,
+   a.y
+  );
+
+  ctx.lineTo(
+   b.x,
+   b.y
+  );
+
+  ctx.stroke();
+
+  ctx.setLineDash([]);
+
+ }
+
+
+ /* PARTS */
+
+ for(const p of parts){
+
+  drawPart(p);
+
+ }
+
+
+ ctx.restore();
+
+}
+
+
+/* DRAW PART */
+
+function drawPart(p){
+
+ const t=types[p.type];
+
+ const c=
+  worldToScreen(
+   p.x+t.w/2,
+   p.y+t.h/2
+  );
+
+ ctx.save();
+
+ ctx.translate(
+  c.x,
+  c.y
+ );
+
+ ctx.rotate(
+  p.rot*Math.PI/180
+ );
+
+
+ /* SHADOW */
+
+ ctx.fillStyle=
+  "rgba(55,55,35,.08)";
+
+ ctx.fillRect(
+  -t.w*scale/2+4,
+  -t.h*scale/2+5,
+  t.w*scale,
+  t.h*scale
+ );
+
+
+ /* BODY */
+
+ ctx.fillStyle=t.color;
+
+ ctx.strokeStyle=
+  p===selected
+   ? "#9e8a28"
+   : "#aaa88f";
+
+ ctx.lineWidth=
+  p===selected
+   ? 3
+   : 1.5;
+
+
+ ctx.beginPath();
+
+ roundRect(
+  ctx,
+  -t.w*scale/2,
+  -t.h*scale/2,
+  t.w*scale,
+  t.h*scale,
+  12*scale
+ );
+
+ ctx.fill();
+ ctx.stroke();
+
+
+ /* ICON */
+
+ ctx.fillStyle="#303228";
+
+ ctx.textAlign="center";
+ ctx.textBaseline="middle";
+
+ ctx.font=
+  `bold ${Math.max(
+   15,
+   24*scale
+  )}px Arial`;
+
+ ctx.fillText(
+  t.icon,
+  0,
+  -4*scale
+ );
+
+
+ /* NAME */
+
+ ctx.font=
+  `bold ${Math.max(
+   9,
+   11*scale
+  )}px Arial`;
+
+ ctx.fillText(
+  t.name,
+  0,
+  t.h*scale/2-
+  13*scale
+ );
+
+
+ /* PORTS */
+
+ for(const port of t.ports){
+
+  let q;
+
+  if(port==="in"){
+
+   q={
+    x:-t.w/2,
+    y:0
+   };
+
+  }else{
+
+   q={
+    x:t.w/2,
+    y:0
+   };
+
+  }
+
+
+  ctx.fillStyle=
+   port==="in"
+    ? "#91a77d"
+    : "#d0b73e";
+
+
+  ctx.beginPath();
+
+  ctx.arc(
+   q.x*scale,
+   q.y*scale,
+   6*scale,
+   0,
+   Math.PI*2
+  );
+
+  ctx.fill();
+
+
+  ctx.strokeStyle="#fff";
+
+  ctx.lineWidth=2*scale;
+
+  ctx.stroke();
+
+ }
+
+
+ ctx.restore();
+
+}
+
+
+function roundRect(
+ c,x,y,w,h,r
+){
+
+ let rr=Math.min(
+  r,
+  Math.abs(w)/2,
+  Math.abs(h)/2
+ );
+
+ c.moveTo(
+  x+rr,
+  y
+ );
+
+ c.arcTo(
+  x+w,y,
+  x+w,y+h,
+  rr
+ );
+
+ c.arcTo(
+  x+w,y+h,
+  x,y+h,
+  rr
+ );
+
+ c.arcTo(
+  x,y+h,
+  x,y,
+  rr
+ );
+
+ c.arcTo(
+  x,y,
+  x+w,y,
+  rr
+ );
+
+ c.closePath();
+
+}
+
+
+/* POINTER */
+
+function pointer(e){
+
+ const r=
+  canvas.getBoundingClientRect();
+
+ return {
+  x:e.clientX-r.left,
+  y:e.clientY-r.top
+ };
+
+}
+
+
+/* POINTER DOWN */
+
+canvas.addEventListener(
+ "pointerdown",
+ e=>{
+
+  const m=pointer(e);
+
+  const w=
+   screenToWorld(
+    m.x,
+    m.y
+   );
+
+
+  const port=
+   nearestPort(
+    w.x,
+    w.y
+   );
+
+
+  if(port){
+
+   connecting={
+    ...port,
+    mx:m.x,
+    my:m.y
+   };
+
+   return;
+
+  }
+
+
+  const p=
+   [...parts]
+   .reverse()
+   .find(
+    p=>pointInPart(
+     p,
+     m.x,
+     m.y
+    )
+   );
+
+
+  selected=p||null;
+
+
+  if(p){
+
+   drag={
+    p,
+    dx:w.x-p.x,
+    dy:w.y-p.y
+   };
+
+   canvas.setPointerCapture(
+    e.pointerId
+   );
+
+  }
+
+
+  updateInspector();
+
+  draw();
+
+ }
 );
 
 
-/* ---------------------------------------------------------
-   PROJECT NAME
---------------------------------------------------------- */
+/* POINTER MOVE */
 
-$("projectName").addEventListener(
-    "input",
-    () => {
+canvas.addEventListener(
+ "pointermove",
+ e=>{
 
-        $("outputTitle").textContent =
-            $("projectName").value ||
-            "Untitled Lemon";
+  const m=pointer(e);
 
-    }
-);
 
+  if(connecting){
 
-/* ---------------------------------------------------------
-   MACHINE TYPE
---------------------------------------------------------- */
+   connecting.mx=m.x;
+   connecting.my=m.y;
 
-$("machineType").addEventListener(
-    "change",
-    generateConcept
-);
+   draw();
 
+   return;
 
-/* ---------------------------------------------------------
-   GENERATE BUTTON
---------------------------------------------------------- */
+  }
 
-$("generateBtn").addEventListener(
-    "click",
-    () => {
 
-        generateConcept();
+  if(drag){
 
-        $("projectStatus").textContent =
-            "● CONCEPT UPDATED";
-
-        setTimeout(() => {
-
-            $("projectStatus").textContent =
-                "● READY";
-
-        }, 1600);
-
-    }
-);
-
-
-/* ---------------------------------------------------------
-   RANDOM ARRAY PICKER
---------------------------------------------------------- */
-
-function pick(array, seed) {
-
-    return array[
-        Math.abs(
-            Math.floor(seed)
-        ) % array.length
-    ];
-
-}
-
-
-/* ---------------------------------------------------------
-   CONCEPT GENERATOR
---------------------------------------------------------- */
-
-function generateConcept() {
-
-    const type =
-        $("machineType").value;
-
-    const power =
-        Number($("power").value);
-
-    const complexity =
-        Number($("complexity").value);
-
-    const data =
-        machineData[type];
-
-
-    const sourceFactor = {
-
-        petrol: 1,
-
-        battery: 1.12,
-
-        hybrid: 1.08,
-
-        steam: .86
-
-    }[powerSource];
-
-
-    const efficiency =
-        Math.min(
-            98,
-            Math.round(
-                75 +
-                complexity * .18 +
-                sourceFactor * 4
-            )
-        );
-
-
-    const torque =
-        Math.round(
-            power *
-            data.baseTorque *
-            (
-                .78 +
-                complexity / 250
-            )
-        );
-
-
-    const rpm =
-        Math.round(
-            data.rpm *
-            (
-                .72 +
-                complexity / 360
-            )
-        );
-
-
-    $("outputTitle").textContent =
-        $("projectName").value ||
-        "Untitled Lemon";
-
-
-    $("efficiency").textContent =
-        efficiency;
-
-
-    $("outputPower").textContent =
-        power + " kW";
-
-
-    $("outputTorque").textContent =
-        torque + " Nm";
-
-
-    $("outputRpm").textContent =
-        rpm.toLocaleString();
-
-
-    $("architecture").textContent =
-        pick(
-            data.architectures,
-            complexity + power
-        );
-
-
-    $("delivery").textContent =
-        pick(
-            data.delivery,
-            power + complexity * 2
-        );
-
-
-    $("cooling").textContent =
-        pick(
-            data.cooling,
-            complexity + 3
-        );
-
-
-    $("control").textContent =
-        pick(
-            data.control,
-            power + 8
-        );
-
-
-    $("conceptText").textContent =
-        data.text +
-        ` ${powerSource[0].toUpperCase() +
-        powerSource.slice(1)}
-        input selected with
-        ${complexity}% design complexity.`;
-
-}
-
-
-/* ---------------------------------------------------------
-   QUICK BUILD BUTTONS
---------------------------------------------------------- */
-
-function quickBuild(type) {
-
-    $("machineType").value =
-        type;
-
-
-    if (type === "engine") {
-
-        $("projectName").value =
-            "Lemon Engine 01";
-
-    }
-
-    else if (type === "robot") {
-
-        $("projectName").value =
-            "Lemon Mechanism 01";
-
-    }
-
-    else {
-
-        $("projectName").value =
-            "Lemon Oddity 01";
-
-    }
-
-
-    generateConcept();
-
-    scrollToBuilder();
-
-}
-
-
-/* ---------------------------------------------------------
-   COPY CONCEPT
---------------------------------------------------------- */
-
-async function copyConcept() {
-
-    const text = `
-
-${$("outputTitle").textContent}
-
-${$("conceptText").textContent}
-
-Output:
-${$("outputPower").textContent}
-
-Torque:
-${$("outputTorque").textContent}
-
-RPM:
-${$("outputRpm").textContent}
-
-Architecture:
-${$("architecture").textContent}
-
-Power delivery:
-${$("delivery").textContent}
-
-Cooling:
-${$("cooling").textContent}
-
-Control:
-${$("control").textContent}
-
-`;
-
-
-    try {
-
-        await navigator.clipboard.writeText(text);
-
-        showToast(
-            "Concept copied to clipboard."
-        );
-
-    }
-
-    catch {
-
-        showToast(
-            "Concept ready — clipboard access is unavailable."
-        );
-
-    }
-
-}
-
-
-/* ---------------------------------------------------------
-   TOAST
---------------------------------------------------------- */
-
-function showToast(message) {
-
-    const toast =
-        $("toast");
-
-    toast.textContent =
-        message;
-
-    toast.classList.add("show");
-
-    setTimeout(() => {
-
-        toast.classList.remove("show");
-
-    }, 2200);
-
-}
-
-
-/* ---------------------------------------------------------
-   BLUEPRINT DOWNLOAD
---------------------------------------------------------- */
-
-function downloadBlueprint() {
-
-    const data = `
-
-LEMON SHARK / BLUEPRINT 004
-
-Project:
-${$("projectName").value || "Lemon Prototype 01"}
-
-Machine:
-${$("machineType").value}
-
-Power source:
-${powerSource}
-
-Power target:
-${$("power").value} kW
-
-Complexity:
-${$("complexity").value}%
-
-Architecture:
-${$("architecture").textContent}
-
-Power delivery:
-${$("delivery").textContent}
-
-Cooling:
-${$("cooling").textContent}
-
-Control:
-${$("control").textContent}
-
-Estimated efficiency:
-${$("efficiency").textContent}%
-
-Torque:
-${$("outputTorque").textContent}
-
-RPM:
-${$("outputRpm").textContent}
-
-`;
-
-
-    const blob =
-        new Blob(
-            [data],
-            {
-                type: "text/plain"
-            }
-        );
-
-
-    const url =
-        URL.createObjectURL(blob);
-
-
-    const a =
-        document.createElement("a");
-
-
-    a.href = url;
-
-    a.download =
-        "lemon-shark-blueprint.txt";
-
-
-    a.click();
-
-
-    URL.revokeObjectURL(url);
-
-
-    showToast(
-        "Blueprint saved."
+   const w=
+    screenToWorld(
+     m.x,
+     m.y
     );
 
+   drag.p.x=
+    w.x-drag.dx;
+
+   drag.p.y=
+    w.y-drag.dy;
+
+   draw();
+
+  }
+
+ }
+);
+
+
+/* POINTER UP */
+
+canvas.addEventListener(
+ "pointerup",
+ e=>{
+
+  if(connecting){
+
+   const m=pointer(e);
+
+   const w=
+    screenToWorld(
+     m.x,
+     m.y
+    );
+
+   const to=
+    nearestPort(
+     w.x,
+     w.y
+    );
+
+
+   if(
+    to &&
+    to.p!==connecting.p &&
+    to.port!==connecting.port
+   ){
+
+    const a=connecting;
+    const b=to;
+
+
+    if(
+     a.port==="out" &&
+     b.port==="in"
+    ){
+
+     connections.push({
+      a:a.p,
+      ap:a.port,
+      b:b.p,
+      bp:b.port
+     });
+
+    }
+
+    else if(
+     a.port==="in" &&
+     b.port==="out"
+    ){
+
+     connections.push({
+      a:b.p,
+      ap:b.port,
+      b:a.p,
+      bp:a.port
+     });
+
+    }
+
+   }
+
+
+   connecting=null;
+
+   draw();
+
+  }
+
+
+  drag=null;
+
+ }
+);
+
+
+/* DOUBLE CLICK ROTATE */
+
+canvas.addEventListener(
+ "dblclick",
+ e=>{
+
+  const m=pointer(e);
+
+  const p=
+   [...parts]
+   .reverse()
+   .find(
+    p=>pointInPart(
+     p,
+     m.x,
+     m.y
+    )
+   );
+
+
+  if(p){
+
+   p.rot=
+    (p.rot+45)%360;
+
+   draw();
+
+   updateInspector();
+
+  }
+
+ }
+);
+
+
+/* KEYBOARD */
+
+document.addEventListener(
+ "keydown",
+ e=>{
+
+  if(
+   e.key==="Delete" &&
+   selected
+  ){
+
+   deleteSelected();
+
+  }
+
+
+  if(
+   e.key.toLowerCase()==="r" &&
+   selected
+  ){
+
+   selected.rot=
+    (selected.rot+45)%360;
+
+   draw();
+
+   updateInspector();
+
+  }
+
+ }
+);
+
+
+/* INSPECTOR */
+
+function updateInspector(){
+
+ const box=
+  document.getElementById(
+   "inspectorContent"
+  );
+
+
+ if(!selected){
+
+  box.innerHTML=`
+   <div class="empty">
+    Select a component to inspect and tune it.
+    <br><br>
+    Connect green <b>IN</b> ports
+    to gold <b>OUT</b> ports.
+   </div>
+  `;
+
+  return;
+
+ }
+
+
+ const t=
+  types[selected.type];
+
+
+ let html=`
+
+ <h2>
+  ${t.icon} ${t.name}
+ </h2>
+
+ <div style="
+ font-size:10px;
+ color:#929387;
+ margin-bottom:12px
+ ">
+ PART #${selected.id}
+ </div>
+
+ `;
+
+
+ if(selected.type==="gear"){
+
+  html+=`
+
+  <label class="field">
+   Gear ratio
+
+   <input
+    id="partRatio"
+    type="number"
+    min=".1"
+    max="20"
+    step=".1"
+    value="${selected.settings.ratio}"
+   >
+
+  </label>
+
+  `;
+
+ }
+
+
+ if(
+  ["motor","engine","battery"]
+  .includes(selected.type)
+ ){
+
+  html+=`
+
+  <label class="field">
+
+   Source RPM
+
+   <input
+    id="partRPM"
+    type="number"
+    min="0"
+    max="20000"
+    value="${selected.settings.rpm}"
+   >
+
+  </label>
+
+
+  <label class="field">
+
+   Torque (Nm)
+
+   <input
+    id="partTorque"
+    type="number"
+    min="0"
+    max="5000"
+    value="${selected.settings.torque}"
+   >
+
+  </label>
+
+  `;
+
+ }
+
+
+ html+=`
+
+ <div class="stat-grid">
+
+  <div class="stat">
+   <span>WIDTH</span>
+   <strong>${t.w}</strong>
+  </div>
+
+  <div class="stat">
+   <span>HEIGHT</span>
+   <strong>${t.h}</strong>
+  </div>
+
+ </div>
+
+
+ <button
+  class="btn danger"
+  style="width:100%"
+  onclick="deleteSelected()"
+ >
+  Delete component
+ </button>
+
+ `;
+
+
+ box.innerHTML=html;
+
+
+ const ratio=
+  document.getElementById(
+   "partRatio"
+  );
+
+ const rpm=
+  document.getElementById(
+   "partRPM"
+  );
+
+ const torque=
+  document.getElementById(
+   "partTorque"
+  );
+
+
+ if(ratio){
+
+  ratio.oninput=()=>{
+
+   selected.settings.ratio=
+    Number(ratio.value)||1;
+
+   draw();
+
+  };
+
+ }
+
+
+ if(rpm){
+
+  rpm.oninput=()=>{
+
+   selected.settings.rpm=
+    Number(rpm.value)||0;
+
+  };
+
+ }
+
+
+ if(torque){
+
+  torque.oninput=()=>{
+
+   selected.settings.torque=
+    Number(torque.value)||0;
+
+  };
+
+ }
+
 }
 
 
-/* ---------------------------------------------------------
-   INITIAL BUILD
---------------------------------------------------------- */
+/* DELETE */
 
-generateConcept();
+function deleteSelected(){
+
+ if(!selected)return;
+
+ connections=
+  connections.filter(
+   c=>
+    c.a!==selected &&
+    c.b!==selected
+  );
+
+ parts=
+  parts.filter(
+   p=>p!==selected
+  );
+
+ selected=null;
+
+ updateInspector();
+
+ draw();
+
+}
+
+
+/* CLEAR */
+
+function clearAll(){
+
+ if(
+  confirm(
+   "Clear the entire workbench?"
+  )
+ ){
+
+  parts=[];
+  connections=[];
+  selected=null;
+
+  stopMachine();
+
+  updateInspector();
+
+  draw();
+
+ }
+
+}
+
+
+/* NEW */
+
+function newProject(){
+
+ if(
+  confirm(
+   "Start a new project?"
+  )
+ ){
+
+  parts=[];
+  connections=[];
+  selected=null;
+
+  document.getElementById(
+   "projectName"
+  ).value="New Lemon Machine";
+
+  stopMachine();
+
+  updateInspector();
+
+  draw();
+
+ }
+
+}
+
+
+/* SAVE */
+
+function saveProject(){
+
+ const data={
+
+  name:
+   document.getElementById(
+    "projectName"
+   ).value,
+
+  parts,
+
+  connections:
+   connections.map(
+    c=>({
+     a:c.a.id,
+     ap:c.ap,
+     b:c.b.id,
+     bp:c.bp
+    })
+   )
+
+ };
+
+
+ localStorage.setItem(
+  "lemonSharkProject",
+  JSON.stringify(data)
+ );
+
+
+ toast(
+  "Project saved in this browser."
+ );
+
+}
+
+
+/* LOAD */
+
+function loadProject(){
+
+ const raw=
+  localStorage.getItem(
+   "lemonSharkProject"
+  );
+
+
+ if(!raw){
+
+  toast(
+   "No saved project found."
+  );
+
+  return;
+
+ }
+
+
+ const d=
+  JSON.parse(raw);
+
+
+ document.getElementById(
+  "projectName"
+ ).value=
+  d.name||
+  "Loaded Machine";
+
+
+ parts=d.parts||[];
+
+
+ connections=
+  (d.connections||[])
+  .map(c=>({
+
+   a:parts.find(
+    p=>p.id===c.a
+   ),
+
+   ap:c.ap,
+
+   b:parts.find(
+    p=>p.id===c.b
+   ),
+
+   bp:c.bp
+
+  }))
+  .filter(
+   c=>c.a&&c.b
+  );
+
+
+ uid=
+  Math.max(
+   0,
+   ...parts.map(
+    p=>p.id
+   )
+  )+1;
+
+
+ selected=null;
+
+ draw();
+
+ updateInspector();
+
+ toast(
+  "Project loaded."
+ );
+
+}
+
+
+/* ZOOM */
+
+function zoom(z){
+
+ scale=
+  Math.max(
+   .55,
+   Math.min(
+    1.5,
+    scale+z
+   )
+  );
+
+ draw();
+
+}
+
+
+function resetView(){
+
+ scale=1;
+
+ offset={
+  x:0,
+  y:0
+ };
+
+ draw();
+
+}
+
+
+/* SIMULATION */
+
+function toggleRun(){
+
+ if(running){
+
+  stopMachine();
+
+ }else{
+
+  startMachine();
+
+ }
+
+}
+
+
+function startMachine(){
+
+ if(
+  !parts.some(
+   p=>
+    ["motor","engine","battery"]
+    .includes(p.type)
+  )
+ ){
+
+  toast(
+   "Add a Motor, Engine, or Battery first."
+  );
+
+  return;
+
+ }
+
+
+ running=true;
+
+ document.getElementById(
+  "runBtn"
+ ).textContent=
+  "■ Stop Machine";
+
+
+ document.getElementById(
+  "machineState"
+ ).textContent=
+  "RUNNING";
+
+
+ document.getElementById(
+  "runDot"
+ ).classList.add(
+  "on"
+ );
+
+
+ document.getElementById(
+  "runText"
+ ).textContent=
+  "Machine running";
+
+
+ simTime=0;
+
+ requestAnimationFrame(
+  simulate
+ );
+
+}
+
+
+function stopMachine(){
+
+ running=false;
+
+ document.getElementById(
+  "runBtn"
+ ).textContent=
+  "▶ Run Machine";
+
+
+ document.getElementById(
+  "machineState"
+ ).textContent=
+  "STOPPED";
+
+
+ document.getElementById(
+  "runDot"
+ ).classList.remove(
+  "on"
+ );
+
+
+ document.getElementById(
+  "runText"
+ ).textContent=
+  "Machine offline";
+
+
+ document.getElementById(
+  "rpm"
+ ).textContent="0";
+
+
+ document.getElementById(
+  "torque"
+ ).textContent=
+  "0 Nm";
+
+
+ document.getElementById(
+  "powerOut"
+ ).textContent=
+  "0 kW";
+
+
+ document.getElementById(
+  "eff"
+ ).textContent=
+  "0%";
+
+
+ draw();
+
+}
+
+
+function simulate(ts){
+
+ if(!running)return;
+
+ simTime=ts/1000;
+
+
+ const source=
+  parts.find(
+   p=>
+    ["motor","engine","battery"]
+    .includes(p.type)
+  );
+
+
+ let rpm=
+  source.settings.rpm||0;
+
+ let torque=
+  source.settings.torque||0;
+
+ let efficiency=94;
+
+
+ let visited=
+  new Set([
+   source.id
+  ]);
+
+
+ let queue=[{
+  p:source,
+  rpm,
+  torque
+ }];
+
+
+ while(queue.length){
+
+  const cur=
+   queue.shift();
+
+
+  for(
+   const c of connections
+  ){
+
+   if(c.a!==cur.p)
+    continue;
+
+
+   const n=c.b;
+
+
+   if(
+    visited.has(n.id)
+   )
+    continue;
+
+
+   visited.add(n.id);
+
+
+   let nr=
+    cur.rpm;
+
+   let nt=
+    cur.torque;
+
+
+   if(n.type==="gear"){
+
+    nr/=
+     n.settings.ratio;
+
+    nt*=
+     n.settings.ratio*.93;
+
+   }
+
+
+   if(
+    n.type==="shaft"||
+    n.type==="bearing"
+   ){
+
+    efficiency-=2;
+
+   }
+
+
+   if(n.type==="wheel"){
+
+    nt/=
+     n.load||1;
+
+    efficiency-=5;
+
+   }
+
+
+   if(n.type==="spring"){
+
+    efficiency-=3;
+
+   }
+
+
+   queue.push({
+    p:n,
+    rpm:nr,
+    torque:nt
+   });
+
+  }
+
+ }
+
+
+ rpm*=
+  1+
+  .025*
+  Math.sin(
+   simTime*3
+  );
+
+
+ document.getElementById(
+  "rpm"
+ ).textContent=
+  Math.round(
+   rpm
+  ).toLocaleString();
+
+
+ document.getElementById(
+  "torque"
+ ).textContent=
+  Math.round(
+   torque
+  )+" Nm";
+
+
+ document.getElementById(
+  "powerOut"
+ ).textContent=
+  (
+   rpm*
+   torque/
+   9550/
+   10
+  ).toFixed(1)+" kW";
+
+
+ document.getElementById(
+  "eff"
+ ).textContent=
+  Math.max(
+   35,
+   Math.round(
+    efficiency
+   )
+  )+"%";
+
+
+ /* ANIMATE ROTATING PARTS */
+
+ for(
+  const p of parts
+ ){
+
+  if(
+   ["gear","wheel"]
+   .includes(p.type)&&
+   visited.has(p.id)
+  ){
+
+   p.rot+=
+    (rpm/60)*.12;
+
+  }
+
+ }
+
+
+ draw();
+
+ requestAnimationFrame(
+  simulate
+ );
+
+}
+
+
+/* TOAST */
+
+function toast(t){
+
+ const el=
+  document.createElement(
+   "div"
+  );
+
+ el.textContent=t;
+
+ el.style.cssText=`
+
+ position:fixed;
+ left:50%;
+ bottom:24px;
+ transform:translateX(-50%);
+ background:#292c24;
+ color:white;
+ padding:11px 16px;
+ border-radius:9px;
+ font-size:12px;
+ z-index:99;
+
+ `;
+
+ document.body.appendChild(el);
+
+ setTimeout(
+  ()=>el.remove(),
+  1900
+ );
+
+}
+
+
+/* INITIALIZE */
+
+resize();
+
+
+/* STARTER MACHINE */
+
+addPart(
+ "motor",
+ 180,
+ 260
+);
+
+addPart(
+ "gear",
+ 380,
+ 260
+);
+
+addPart(
+ "shaft",
+ 520,
+ 260
+);
+
+addPart(
+ "wheel",
+ 690,
+ 260
+);
+
+
+connections.push({
+ a:parts[0],
+ ap:"out",
+ b:parts[1],
+ bp:"in"
+});
+
+
+connections.push({
+ a:parts[1],
+ ap:"out",
+ b:parts[2],
+ bp:"in"
+});
+
+
+connections.push({
+ a:parts[2],
+ ap:"out",
+ b:parts[3],
+ bp:"in"
+});
+
+
+selected=null;
+
+draw();
+
+updateInspector();
 
 </script>
 
