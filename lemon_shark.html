@@ -1,0 +1,2979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Lemon Shark — Mechanical Workshop</title>
+
+<style>
+/* =========================================================
+   LEMON SHARK — ALL CSS
+========================================================= */
+
+:root {
+    --cream: #fffdf4;
+    --paper: #fff9dc;
+    --lemon: #f8e88c;
+    --lemon-light: #fff4b7;
+    --lemon-dark: #d8bd3d;
+    --ink: #25281f;
+    --muted: #747568;
+    --line: #e9e5ce;
+    --green: #91a77f;
+    --white: #ffffff;
+    --shadow: 0 22px 70px rgba(77, 72, 34, 0.10);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    color: var(--ink);
+    background: var(--cream);
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Background blobs */
+
+.ambient {
+    position: fixed;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: .25;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.ambient-one {
+    background: #f8e88c;
+    top: 0;
+    left: -220px;
+}
+
+.ambient-two {
+    background: #cfe0bd;
+    right: -220px;
+    top: 45%;
+}
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.nav {
+    width: min(1180px, calc(100% - 44px));
+    margin: 20px auto 0;
+    padding: 10px 12px 10px 18px;
+
+    display: flex;
+    align-items: center;
+    gap: 30px;
+
+    border: 1px solid rgba(229,224,197,.85);
+    border-radius: 18px;
+
+    background: rgba(255,253,244,.82);
+    backdrop-filter: blur(18px);
+
+    position: sticky;
+    top: 14px;
+    z-index: 20;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.brand-mark {
+    width: 35px;
+    height: 35px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 11px;
+    background: var(--lemon);
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.nav nav {
+    display: flex;
+    gap: 27px;
+    margin: auto;
+
+    color: #696a5d;
+    font-size: 14px;
+}
+
+.nav nav a {
+    transition: .2s;
+}
+
+.nav nav a:hover {
+    color: var(--ink);
+}
+
+.nav-button,
+.primary,
+.generate {
+    border: 0;
+    background: var(--ink);
+    color: white;
+
+    border-radius: 12px;
+    padding: 12px 16px;
+
+    font-weight: 700;
+    transition: .2s;
+}
+
+.nav-button:hover,
+.primary:hover,
+.generate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(37,40,31,.16);
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    width: min(1180px, calc(100% - 44px));
+    margin: 80px auto 85px;
+
+    min-height: 550px;
+
+    display: grid;
+    grid-template-columns: 1.03fr .97fr;
+
+    align-items: center;
+    gap: 70px;
+}
+
+.eyebrow,
+.section-kicker,
+.mini-label {
+    letter-spacing: .14em;
+    font-size: 11px;
+    font-weight: 700;
+    color: #85846f;
+}
+
+.eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.pulse,
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #a9bc89;
+    display: inline-block;
+    box-shadow: 0 0 0 5px rgba(169,188,137,.14);
+}
+
+.hero h1 {
+    font-size: clamp(60px, 7.5vw, 105px);
+    line-height: .87;
+    letter-spacing: -.075em;
+    margin: 24px 0;
+    font-weight: 800;
+}
+
+em {
+    color: #cfb33d;
+    font-style: normal;
+}
+
+.hero-text {
+    max-width: 540px;
+
+    color: var(--muted);
+    line-height: 1.75;
+    font-size: 16px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 11px;
+    margin-top: 28px;
+}
+
+.primary {
+    padding: 15px 19px;
+}
+
+.ghost {
+    border: 1px solid var(--line);
+    background: transparent;
+
+    border-radius: 12px;
+    padding: 15px 19px;
+
+    color: var(--ink);
+    font-weight: 700;
+}
+
+.hero-note {
+    margin-top: 35px;
+    color: #9a9985;
+    font-size: 12px;
+}
+
+/* =========================================================
+   MACHINE
+========================================================= */
+
+.hero-machine {
+    position: relative;
+}
+
+.machine-glow {
+    position: absolute;
+
+    width: 340px;
+    height: 340px;
+
+    background: var(--lemon-light);
+    border-radius: 50%;
+    filter: blur(25px);
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+}
+
+.machine-card {
+    position: relative;
+
+    background: rgba(255,255,255,.73);
+    border: 1px solid #ece7cb;
+
+    border-radius: 28px;
+
+    box-shadow: var(--shadow);
+
+    overflow: hidden;
+
+    transform: rotate(1.5deg);
+}
+
+.machine-top {
+    padding: 17px 20px;
+
+    border-bottom: 1px solid var(--line);
+
+    display: flex;
+    gap: 9px;
+    align-items: center;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .12em;
+
+    color: #8a8978;
+}
+
+.machine-id {
+    margin-left: auto;
+    color: #b3ae91;
+}
+
+.engine-illustration {
+    height: 340px;
+    position: relative;
+    overflow: hidden;
+
+    background:
+        radial-gradient(circle at 50% 50%, #fff9d9 0 20%, transparent 48%),
+        linear-gradient(135deg,#fefcf0,#fff8c9);
+}
+
+.engine-illustration::before,
+.engine-illustration::after {
+    content: "";
+    position: absolute;
+
+    border: 1px dashed #ddd5a8;
+    border-radius: 50%;
+
+    inset: 50px 95px;
+}
+
+.engine-illustration::after {
+    inset: 90px 140px;
+}
+
+.gear {
+    position: absolute;
+
+    border-radius: 50%;
+    border: 13px dotted #c8b84e;
+
+    background: #fffce7;
+
+    box-shadow: inset 0 0 0 7px #eee5a9;
+}
+
+.gear-large {
+    width: 150px;
+    height: 150px;
+
+    left: 17%;
+    top: 23%;
+
+    animation: spin 18s linear infinite;
+}
+
+.gear-small {
+    width: 91px;
+    height: 91px;
+
+    left: 48%;
+    top: 40%;
+
+    animation: spin 11s linear infinite reverse;
+}
+
+.shaft {
+    position: absolute;
+
+    width: 230px;
+    height: 18px;
+
+    background: #b4b099;
+
+    left: 22%;
+    top: 58%;
+
+    border-radius: 20px;
+
+    transform: rotate(-16deg);
+}
+
+.piston {
+    position: absolute;
+
+    width: 26px;
+    height: 105px;
+
+    background: #c4c0a7;
+
+    border-radius: 6px;
+
+    top: 15%;
+}
+
+.piston::after {
+    content: "";
+
+    position: absolute;
+
+    width: 48px;
+    height: 30px;
+
+    left: -11px;
+    bottom: -9px;
+
+    border-radius: 7px;
+
+    background: #8d8a79;
+}
+
+.piston-one {
+    left: 60%;
+    transform: rotate(22deg);
+}
+
+.piston-two {
+    left: 72%;
+    top: 27%;
+    transform: rotate(35deg);
+}
+
+.coil {
+    position: absolute;
+
+    width: 80px;
+    height: 70px;
+
+    right: 11%;
+    bottom: 10%;
+
+    border: 7px solid #a8b49a;
+    border-radius: 50%;
+
+    border-left-color: transparent;
+
+    transform: rotate(-20deg);
+}
+
+.bolt {
+    width: 12px;
+    height: 12px;
+
+    border-radius: 50%;
+    background: #a4a18f;
+
+    position: absolute;
+}
+
+.bolt-a {
+    left: 8%;
+    top: 12%;
+}
+
+.bolt-b {
+    right: 8%;
+    top: 12%;
+}
+
+.machine-bottom {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+
+    padding: 18px 20px;
+    gap: 10px;
+}
+
+.machine-bottom div {
+    border-right: 1px solid var(--line);
+    padding-left: 10px;
+}
+
+.machine-bottom div:last-child {
+    border: 0;
+}
+
+.machine-bottom small {
+    display: block;
+
+    color: #999785;
+    font-size: 9px;
+    letter-spacing: .1em;
+}
+
+.machine-bottom strong {
+    font-size: 17px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================================
+   TICKER
+========================================================= */
+
+.ticker {
+    border-block: 1px solid var(--line);
+
+    padding: 18px 5%;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    color: #aaa78e;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: .15em;
+}
+
+.ticker i {
+    color: #d5be4e;
+}
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.section {
+    width: min(1180px, calc(100% - 44px));
+    margin: auto;
+    padding: 110px 0;
+}
+
+.section-heading {
+    display: grid;
+    grid-template-columns: 1fr .6fr;
+
+    gap: 80px;
+
+    align-items: end;
+
+    margin-bottom: 44px;
+}
+
+.section-heading h2,
+.philosophy h2 {
+    font-size: clamp(38px,5vw,64px);
+    line-height: .98;
+    letter-spacing: -.055em;
+
+    margin: 12px 0;
+}
+
+.section-heading p {
+    color: var(--muted);
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* =========================================================
+   BUILDER
+========================================================= */
+
+.builder-grid {
+    display: grid;
+    grid-template-columns: .82fr 1.18fr;
+    gap: 18px;
+}
+
+.builder-panel,
+.result-panel {
+    border: 1px solid var(--line);
+
+    background: #fffef7;
+
+    border-radius: 22px;
+
+    box-shadow: 0 16px 50px rgba(70,65,30,.05);
+}
+
+.builder-panel {
+    padding: 26px;
+}
+
+.panel-title,
+.result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.panel-title {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .13em;
+
+    padding-bottom: 21px;
+
+    border-bottom: 1px solid var(--line);
+}
+
+.saved {
+    color: #91a57f;
+    font-size: 9px;
+}
+
+.field {
+    display: block;
+    margin-top: 24px;
+}
+
+.field > span,
+.range-head {
+    display: flex;
+    justify-content: space-between;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    margin-bottom: 9px;
+}
+
+input[type="text"],
+select {
+    width: 100%;
+
+    border: 1px solid var(--line);
+    background: white;
+
+    border-radius: 10px;
+
+    padding: 13px;
+
+    outline: none;
+
+    color: var(--ink);
+}
+
+input[type="text"]:focus,
+select:focus {
+    border-color: #d7c75f;
+}
+
+.choice-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.choice {
+    flex: 1;
+
+    min-width: 65px;
+
+    padding: 10px 8px;
+
+    border: 1px solid var(--line);
+    border-radius: 9px;
+
+    background: white;
+
+    color: #777668;
+
+    font-size: 11px;
+}
+
+.choice.active {
+    background: var(--lemon);
+
+    color: var(--ink);
+
+    border-color: #e7d66d;
+
+    font-weight: 700;
+}
+
+input[type="range"] {
+    width: 100%;
+    accent-color: #d4ba38;
+}
+
+.generate {
+    width: 100%;
+
+    margin-top: 28px;
+
+    padding: 15px;
+}
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+.result-panel {
+    padding: 26px;
+}
+
+.result-header {
+    margin-bottom: 22px;
+}
+
+.result-header h3 {
+    font-size: 27px;
+
+    margin: 5px 0;
+
+    letter-spacing: -.04em;
+}
+
+.icon-button {
+    border: 1px solid var(--line);
+
+    background: white;
+
+    border-radius: 9px;
+
+    padding: 9px 12px;
+
+    color: #777;
+}
+
+.spec-card {
+    background: var(--paper);
+
+    border: 1px solid #eee3a7;
+
+    border-radius: 16px;
+
+    padding: 22px;
+}
+
+.spec-main {
+    display: flex;
+
+    gap: 20px;
+
+    align-items: center;
+}
+
+.spec-ring {
+    width: 88px;
+    height: 88px;
+
+    flex: none;
+
+    border-radius: 50%;
+
+    border: 8px solid #ebdc75;
+
+    display: grid;
+    place-content: center;
+
+    text-align: center;
+
+    font-size: 26px;
+    font-weight: 800;
+}
+
+.spec-ring small {
+    font-size: 11px;
+}
+
+.spec-main p {
+    color: #777565;
+
+    font-size: 12px;
+
+    line-height: 1.55;
+
+    margin: 7px 0 0;
+}
+
+.spec-stats {
+    display: grid;
+
+    grid-template-columns: repeat(3,1fr);
+
+    gap: 8px;
+
+    margin-top: 20px;
+
+    padding-top: 17px;
+
+    border-top: 1px solid #e9dfa7;
+}
+
+.spec-stats span {
+    display: block;
+
+    color: #9b967a;
+
+    font-size: 9px;
+
+    letter-spacing: .1em;
+}
+
+.spec-stats strong {
+    font-size: 17px;
+}
+
+.component-list {
+    margin-top: 13px;
+}
+
+.component-row {
+    display: grid;
+
+    grid-template-columns: 38px 1fr 25px;
+
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 14px 2px;
+
+    border-bottom: 1px solid var(--line);
+}
+
+.component-icon {
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 9px;
+
+    background: #f5f1d9;
+
+    color: #aa983c;
+}
+
+.component-row strong {
+    display: block;
+    font-size: 12px;
+}
+
+.component-row small {
+    color: #99998a;
+    font-size: 10px;
+}
+
+.component-row b {
+    color: #c5c2af;
+
+    font-size: 10px;
+
+    text-align: right;
+}
+
+/* =========================================================
+   IDEA CARDS
+========================================================= */
+
+.cards {
+    display: grid;
+
+    grid-template-columns: repeat(3,1fr);
+
+    gap: 15px;
+}
+
+.idea-card {
+    min-height: 290px;
+
+    padding: 25px;
+
+    border: 1px solid var(--line);
+
+    border-radius: 20px;
+
+    background: #fffef8;
+
+    display: flex;
+    flex-direction: column;
+
+    transition: .25s;
+}
+
+.idea-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+}
+
+.idea-card.featured {
+    background: var(--lemon-light);
+    border-color: #eadc86;
+}
+
+.idea-icon {
+    width: 44px;
+    height: 44px;
+
+    border-radius: 13px;
+
+    background: #f3edcf;
+
+    display: grid;
+    place-items: center;
+
+    font-size: 20px;
+
+    color: #aa983d;
+
+    margin-bottom: 25px;
+}
+
+.idea-card > span {
+    font-size: 10px;
+    font-weight: 700;
+    color: #aaa78f;
+}
+
+.idea-card h3 {
+    font-size: 28px;
+    margin: 8px 0;
+}
+
+.idea-card p {
+    color: #7c7c70;
+
+    font-size: 12px;
+
+    line-height: 1.65;
+}
+
+.idea-card button {
+    border: 0;
+    background: transparent;
+
+    padding: 0;
+
+    text-align: left;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    margin-top: auto;
+}
+
+/* =========================================================
+   BLUEPRINT
+========================================================= */
+
+.blueprint-section {
+    width: min(1280px, calc(100% - 30px));
+    padding-top: 40px;
+}
+
+.blueprint {
+    border-radius: 25px;
+
+    background: #292c24;
+
+    color: white;
+
+    overflow: hidden;
+
+    box-shadow: var(--shadow);
+}
+
+.blueprint-top {
+    padding: 16px 24px;
+
+    border-bottom: 1px solid #44483a;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    color: #a9ab9d;
+
+    font-size: 9px;
+
+    letter-spacing: .15em;
+}
+
+.blueprint-body {
+    display: grid;
+
+    grid-template-columns: .9fr 1.1fr;
+
+    min-height: 430px;
+}
+
+.blueprint-copy {
+    padding: 65px;
+}
+
+.blueprint-copy .section-kicker {
+    color: #b9baab;
+}
+
+.blueprint-copy h2 {
+    font-size: clamp(38px,5vw,63px);
+
+    line-height: .98;
+
+    letter-spacing: -.055em;
+
+    margin: 17px 0;
+}
+
+.blueprint-copy p {
+    max-width: 430px;
+
+    color: #b5b7aa;
+
+    line-height: 1.7;
+
+    font-size: 13px;
+}
+
+.dark-button {
+    margin-top: 20px;
+
+    border: 1px solid #5d604f;
+
+    background: #3b3e32;
+
+    color: white;
+
+    border-radius: 11px;
+
+    padding: 13px 17px;
+
+    font-weight: 700;
+}
+
+.blueprint-drawing {
+    position: relative;
+
+    background-image:
+        linear-gradient(#36392f 1px, transparent 1px),
+        linear-gradient(90deg,#36392f 1px,transparent 1px);
+
+    background-size: 30px 30px;
+
+    border-left: 1px solid #44483a;
+
+    overflow: hidden;
+}
+
+.drawing-circle {
+    position: absolute;
+
+    width: 290px;
+    height: 290px;
+
+    border: 1px solid #aaa;
+
+    left: 28%;
+    top: 17%;
+
+    border-radius: 50%;
+}
+
+.drawing-circle::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 55px;
+
+    border: 1px dashed #777b6e;
+
+    border-radius: 50%;
+}
+
+.drawing-gear {
+    position: absolute;
+
+    width: 120px;
+    height: 120px;
+
+    border: 15px dotted #e6d66f;
+
+    border-radius: 50%;
+
+    left: 45%;
+    top: 36%;
+
+    box-shadow: inset 0 0 0 6px #888b7b;
+
+    animation: spin 15s linear infinite;
+}
+
+.drawing-line {
+    position: absolute;
+
+    background: #85897a;
+
+    height: 1px;
+
+    transform-origin: left;
+}
+
+.line-one {
+    width: 190px;
+    left: 13%;
+    top: 24%;
+    transform: rotate(18deg);
+}
+
+.line-two {
+    width: 190px;
+    left: 68%;
+    top: 68%;
+    transform: rotate(-18deg);
+}
+
+.line-three {
+    width: 100px;
+    left: 58%;
+    top: 22%;
+    transform: rotate(90deg);
+}
+
+.annotation {
+    position: absolute;
+
+    color: #c9cabc;
+
+    font-size: 9px;
+
+    letter-spacing: .1em;
+}
+
+.a1 {
+    left: 13%;
+    top: 18%;
+}
+
+.a2 {
+    right: 10%;
+    top: 63%;
+}
+
+.a3 {
+    left: 15%;
+    bottom: 20%;
+}
+
+.a4 {
+    right: 14%;
+    top: 20%;
+}
+
+/* =========================================================
+   PHILOSOPHY
+========================================================= */
+
+.philosophy {
+    padding-bottom: 130px;
+}
+
+.philosophy-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 100px;
+
+    margin-top: 40px;
+
+    align-items: start;
+}
+
+.large-copy {
+    font-size: 21px;
+
+    line-height: 1.55;
+
+    color: #68695d;
+
+    max-width: 500px;
+
+    margin-top: 0;
+}
+
+.principles {
+    margin-top: 45px;
+}
+
+.principles div {
+    display: flex;
+
+    gap: 22px;
+
+    padding: 17px 0;
+
+    border-top: 1px solid var(--line);
+
+    font-size: 13px;
+}
+
+.principles b {
+    color: #c4ac3e;
+
+    font-size: 10px;
+}
+
+.principles span {
+    font-weight: 700;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+    border-top: 1px solid var(--line);
+
+    padding: 25px max(22px,calc((100% - 1180px)/2));
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    color: #969685;
+
+    font-size: 10px;
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+    position: fixed;
+
+    bottom: 25px;
+    left: 50%;
+
+    transform: translate(-50%,20px);
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    background: #292c24;
+
+    color: white;
+
+    padding: 12px 18px;
+
+    border-radius: 10px;
+
+    font-size: 12px;
+
+    transition: .3s;
+
+    z-index: 50;
+}
+
+.toast.show {
+    opacity: 1;
+
+    transform: translate(-50%,0);
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:850px) {
+
+    .nav nav {
+        display: none;
+    }
+
+    .nav-button {
+        margin-left: auto;
+    }
+
+    .hero {
+        grid-template-columns: 1fr;
+
+        gap: 40px;
+
+        margin-top: 55px;
+    }
+
+    .hero-machine {
+        max-width: 620px;
+
+        width: 100%;
+
+        margin: auto;
+    }
+
+    .section-heading,
+    .builder-grid,
+    .blueprint-body,
+    .philosophy-grid {
+        grid-template-columns: 1fr;
+
+        gap: 30px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .section-heading {
+        margin-bottom: 30px;
+    }
+
+    .blueprint-copy {
+        padding: 45px 30px;
+    }
+
+    .blueprint-drawing {
+        min-height: 360px;
+
+        border-left: 0;
+
+        border-top: 1px solid #44483a;
+    }
+
+    .ticker {
+        overflow: hidden;
+
+        gap: 28px;
+
+        justify-content: flex-start;
+
+        white-space: nowrap;
+    }
+}
+
+@media(max-width:520px) {
+
+    .nav {
+        width: calc(100% - 24px);
+    }
+
+    .hero,
+    .section {
+        width: calc(100% - 28px);
+    }
+
+    .hero h1 {
+        font-size: 60px;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+    }
+
+    .hero-actions button {
+        width: 100%;
+    }
+
+    .machine-bottom {
+        grid-template-columns: 1fr;
+    }
+
+    .machine-bottom div {
+        border-right: 0;
+
+        border-bottom: 1px solid var(--line);
+
+        padding: 7px 0;
+    }
+
+    .spec-main {
+        align-items: flex-start;
+    }
+
+    .spec-stats {
+        grid-template-columns: 1fr;
+    }
+
+    footer {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .blueprint-section {
+        width: calc(100% - 18px);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="ambient ambient-one"></div>
+<div class="ambient ambient-two"></div>
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<header class="nav">
+
+    <a class="brand" href="#">
+        <span class="brand-mark">LS</span>
+        <span>Lemon Shark</span>
+    </a>
+
+    <nav>
+        <a href="#workshop">Workshop</a>
+        <a href="#engines">Builds</a>
+        <a href="#blueprints">Blueprints</a>
+        <a href="#about">About</a>
+    </nav>
+
+    <button class="nav-button" onclick="scrollToBuilder()">
+        Open Workshop ↗
+    </button>
+
+</header>
+
+
+<main>
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+    <div class="hero-copy">
+
+        <div class="eyebrow">
+            <span class="pulse"></span>
+            CALM ENGINEERING LAB
+        </div>
+
+        <h1>
+            Build it.<br>
+            <em>Make it move.</em>
+        </h1>
+
+        <p class="hero-text">
+            A peaceful digital workshop for inventing engines,
+            machines, mechanisms, tools, vehicles, and wonderfully
+            strange things.
+        </p>
+
+        <div class="hero-actions">
+
+            <button class="primary" onclick="scrollToBuilder()">
+                Start designing →
+            </button>
+
+            <button class="ghost" onclick="scrollToSection('blueprints')">
+                View blueprints
+            </button>
+
+        </div>
+
+        <div class="hero-note">
+            ⌁ From first sketch to working mechanism.
+        </div>
+
+    </div>
+
+
+    <!-- ENGINE GRAPHIC -->
+
+    <div class="hero-machine">
+
+        <div class="machine-glow"></div>
+
+        <div class="machine-card">
+
+            <div class="machine-top">
+
+                <span class="status-dot"></span>
+
+                <span>WORKSHOP CORE</span>
+
+                <span class="machine-id">
+                    LS-001
+                </span>
+
+            </div>
+
+            <div class="engine-illustration">
+
+                <div class="gear gear-large"></div>
+
+                <div class="gear gear-small"></div>
+
+                <div class="piston piston-one"></div>
+
+                <div class="piston piston-two"></div>
+
+                <div class="shaft"></div>
+
+                <div class="coil"></div>
+
+                <div class="bolt bolt-a"></div>
+
+                <div class="bolt bolt-b"></div>
+
+            </div>
+
+            <div class="machine-bottom">
+
+                <div>
+                    <small>TORQUE</small>
+                    <strong>284 Nm</strong>
+                </div>
+
+                <div>
+                    <small>RPM</small>
+                    <strong>3,240</strong>
+                </div>
+
+                <div>
+                    <small>EFFICIENCY</small>
+                    <strong>91.8%</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TICKER
+===================================================== -->
+
+<div class="ticker">
+
+    <span>MECHANICAL DESIGN</span>
+    <i>✦</i>
+
+    <span>ENGINE BUILDING</span>
+    <i>✦</i>
+
+    <span>PROTOTYPING</span>
+    <i>✦</i>
+
+    <span>FREEFORM INVENTION</span>
+    <i>✦</i>
+
+    <span>MECHANICAL DESIGN</span>
+
+</div>
+
+
+<!-- =====================================================
+     WORKSHOP
+===================================================== -->
+
+<section id="workshop" class="section workshop">
+
+    <div class="section-heading">
+
+        <div>
+
+            <span class="section-kicker">
+                01 / WORKSHOP
+            </span>
+
+            <h2>
+                Your bench is ready.
+            </h2>
+
+        </div>
+
+        <p>
+            Choose a starting point, tune the parts,
+            and let Lemon Shark calculate a rough
+            concept for you.
+        </p>
+
+    </div>
+
+
+    <div class="builder-grid">
+
+
+        <!-- BUILDER PANEL -->
+
+        <div class="builder-panel">
+
+            <div class="panel-title">
+
+                <span>
+                    PROJECT BUILDER
+                </span>
+
+                <span id="projectStatus" class="saved">
+                    ● READY
+                </span>
+
+            </div>
+
+
+            <label class="field">
+
+                <span>
+                    Project name
+                </span>
+
+                <input
+                    id="projectName"
+                    type="text"
+                    value="Lemon Prototype 01"
+                    maxlength="40"
+                >
+
+            </label>
+
+
+            <label class="field">
+
+                <span>
+                    Machine type
+                </span>
+
+                <select id="machineType">
+
+                    <option value="engine">
+                        Combustion Engine
+                    </option>
+
+                    <option value="electric">
+                        Electric Motor
+                    </option>
+
+                    <option value="turbine">
+                        Compact Turbine
+                    </option>
+
+                    <option value="robot">
+                        Robotic Mechanism
+                    </option>
+
+                    <option value="vehicle">
+                        Vehicle System
+                    </option>
+
+                    <option value="custom">
+                        Something Else
+                    </option>
+
+                </select>
+
+            </label>
+
+
+            <div class="field">
+
+                <span>
+                    Power source
+                </span>
+
+                <div class="choice-row">
+
+                    <button
+                        class="choice active"
+                        data-value="petrol">
+                        Petrol
+                    </button>
+
+                    <button
+                        class="choice"
+                        data-value="battery">
+                        Battery
+                    </button>
+
+                    <button
+                        class="choice"
+                        data-value="hybrid">
+                        Hybrid
+                    </button>
+
+                    <button
+                        class="choice"
+                        data-value="steam">
+                        Steam
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="field">
+
+                <div class="range-head">
+
+                    <span>
+                        Complexity
+                    </span>
+
+                    <strong id="complexityValue">
+                        62%
+                    </strong>
+
+                </div>
+
+                <input
+                    id="complexity"
+                    type="range"
+                    min="10"
+                    max="100"
+                    value="62"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <div class="range-head">
+
+                    <span>
+                        Power target
+                    </span>
+
+                    <strong>
+                        <span id="powerValue">180</span>
+                        kW
+                    </strong>
+
+                </div>
+
+                <input
+                    id="power"
+                    type="range"
+                    min="10"
+                    max="800"
+                    value="180"
+                >
+
+            </div>
+
+
+            <button
+                class="generate"
+                id="generateBtn">
+
+                Generate concept ✦
+
+            </button>
+
+        </div>
+
+
+        <!-- RESULTS -->
+
+        <div class="result-panel">
+
+            <div class="result-header">
+
+                <div>
+
+                    <span class="mini-label">
+                        CONCEPT OUTPUT
+                    </span>
+
+                    <h3 id="outputTitle">
+                        Lemon Prototype 01
+                    </h3>
+
+                </div>
+
+                <button
+                    class="icon-button"
+                    onclick="copyConcept()">
+
+                    ⧉
+
+                </button>
+
+            </div>
+
+
+            <div class="spec-card">
+
+                <div class="spec-main">
+
+                    <div class="spec-ring">
+
+                        <span id="efficiency">
+                            91
+                        </span>
+
+                        <small>%</small>
+
+                    </div>
+
+                    <div>
+
+                        <span class="mini-label">
+                            EST. EFFICIENCY
+                        </span>
+
+                        <p id="conceptText">
+                            Balanced four-cylinder concept with
+                            a smooth power curve and
+                            workshop-friendly architecture.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="spec-stats">
+
+                    <div>
+
+                        <span>OUTPUT</span>
+
+                        <strong id="outputPower">
+                            180 kW
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>TORQUE</span>
+
+                        <strong id="outputTorque">
+                            392 Nm
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>RPM</span>
+
+                        <strong id="outputRpm">
+                            4,860
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="component-list">
+
+                <div class="component-row">
+
+                    <span class="component-icon">
+                        ◉
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Core architecture
+                        </strong>
+
+                        <small id="architecture">
+                            Inline 4 · balanced crank
+                        </small>
+
+                    </div>
+
+                    <b>01</b>
+
+                </div>
+
+
+                <div class="component-row">
+
+                    <span class="component-icon">
+                        ◈
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Power delivery
+                        </strong>
+
+                        <small id="delivery">
+                            Progressive belt drive
+                        </small>
+
+                    </div>
+
+                    <b>02</b>
+
+                </div>
+
+
+                <div class="component-row">
+
+                    <span class="component-icon">
+                        ⌁
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Cooling system
+                        </strong>
+
+                        <small id="cooling">
+                            Liquid loop · twin radiator
+                        </small>
+
+                    </div>
+
+                    <b>03</b>
+
+                </div>
+
+
+                <div class="component-row">
+
+                    <span class="component-icon">
+                        ✧
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Control system
+                        </strong>
+
+                        <small id="control">
+                            Adaptive electronic governor
+                        </small>
+
+                    </div>
+
+                    <b>04</b>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     BUILD TYPES
+===================================================== -->
+
+<section id="engines" class="section">
+
+    <div class="section-heading">
+
+        <div>
+
+            <span class="section-kicker">
+                02 / BUILD LIBRARY
+            </span>
+
+            <h2>
+                Start with anything.
+            </h2>
+
+        </div>
+
+        <p>
+            Use a proven family or throw the rules out
+            and make your own.
+        </p>
+
+    </div>
+
+
+    <div class="cards">
+
+
+        <article class="idea-card">
+
+            <div class="idea-icon">
+                ◎
+            </div>
+
+            <span>01</span>
+
+            <h3>
+                Engines
+            </h3>
+
+            <p>
+                Inline, V, rotary, electric, hybrid,
+                turbine — tune the architecture around
+                the job.
+            </p>
+
+            <button onclick="quickBuild('engine')">
+                Build engine →
+            </button>
+
+        </article>
+
+
+        <article class="idea-card featured">
+
+            <div class="idea-icon">
+                ◇
+            </div>
+
+            <span>02</span>
+
+            <h3>
+                Machines
+            </h3>
+
+            <p>
+                Design mechanisms, robots, tools,
+                transmissions, pumps, arms, linkages,
+                and more.
+            </p>
+
+            <button onclick="quickBuild('robot')">
+                Build machine →
+            </button>
+
+        </article>
+
+
+        <article class="idea-card">
+
+            <div class="idea-icon">
+                ✦
+            </div>
+
+            <span>03</span>
+
+            <h3>
+                Anything
+            </h3>
+
+            <p>
+                Start with a blank bench. Give the
+                invention a purpose and see where
+                the mechanism goes.
+            </p>
+
+            <button onclick="quickBuild('custom')">
+                Go wild →
+            </button>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     BLUEPRINT
+===================================================== -->
+
+<section id="blueprints" class="section blueprint-section">
+
+    <div class="blueprint">
+
+        <div class="blueprint-top">
+
+            <span>
+                LEMON SHARK / BLUEPRINT 004
+            </span>
+
+            <span>
+                REV. 2.4
+            </span>
+
+        </div>
+
+
+        <div class="blueprint-body">
+
+            <div class="blueprint-copy">
+
+                <span class="section-kicker">
+                    03 / BLUEPRINTS
+                </span>
+
+                <h2>
+                    Every great machine
+                    starts as a weird idea.
+                </h2>
+
+                <p>
+                    Keep the sketches rough. Test the impossible.
+                    Refine only after you know what you want
+                    the machine to feel like.
+                </p>
+
+                <button
+                    class="dark-button"
+                    onclick="downloadBlueprint()">
+
+                    Save blueprint ↓
+
+                </button>
+
+            </div>
+
+
+            <div class="blueprint-drawing">
+
+                <div class="drawing-circle"></div>
+
+                <div class="drawing-gear"></div>
+
+                <div class="drawing-line line-one"></div>
+                <div class="drawing-line line-two"></div>
+                <div class="drawing-line line-three"></div>
+
+                <span class="annotation a1">
+                    Ø 86.4
+                </span>
+
+                <span class="annotation a2">
+                    12.8°
+                </span>
+
+                <span class="annotation a3">
+                    4 × M8
+                </span>
+
+                <span class="annotation a4">
+                    SHAFT A
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ABOUT
+===================================================== -->
+
+<section id="about" class="section philosophy">
+
+    <span class="section-kicker">
+        04 / THE SHOP
+    </span>
+
+    <div class="philosophy-grid">
+
+        <h2>
+            Serious about<br>
+            <em>making things.</em>
+        </h2>
+
+
+        <div>
+
+            <p class="large-copy">
+
+                Lemon Shark is a fictional mechanical
+                workshop built around one simple idea:
+                engineering should feel curious, calm,
+                and fun.
+
+            </p>
+
+
+            <div class="principles">
+
+                <div>
+                    <b>01</b>
+                    <span>
+                        Question everything.
+                    </span>
+                </div>
+
+                <div>
+                    <b>02</b>
+                    <span>
+                        Build before perfecting.
+                    </span>
+                </div>
+
+                <div>
+                    <b>03</b>
+                    <span>
+                        Leave room for weird.
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <div class="brand">
+
+        <span class="brand-mark">
+            LS
+        </span>
+
+        <span>
+            Lemon Shark
+        </span>
+
+    </div>
+
+    <span>
+        © 2026 Lemon Shark Workshop
+    </span>
+
+    <span>
+        Made for curious engineers.
+    </span>
+
+</footer>
+
+
+<div id="toast" class="toast">
+    Concept copied to clipboard.
+</div>
+
+
+<script>
+
+/* =========================================================
+   LEMON SHARK — ALL JAVASCRIPT
+========================================================= */
+
+const $ = id => document.getElementById(id);
+
+
+/* ---------------------------------------------------------
+   MACHINE DATA
+--------------------------------------------------------- */
+
+const machineData = {
+
+    engine: {
+
+        architectures: [
+            "Inline 4 · balanced crank",
+            "V6 · compact crankcase",
+            "Flat 4 · low center of mass",
+            "Inline 3 · lightweight crank"
+        ],
+
+        delivery: [
+            "Progressive belt drive",
+            "Direct gear reduction",
+            "Dual-stage transmission"
+        ],
+
+        cooling: [
+            "Liquid loop · twin radiator",
+            "Liquid loop · compact radiator",
+            "Air-cooled · fin stack"
+        ],
+
+        control: [
+            "Adaptive electronic governor",
+            "Mechanical governor",
+            "Closed-loop ECU"
+        ],
+
+        baseTorque: 2.15,
+
+        rpm: 4860,
+
+        text:
+            "Balanced combustion architecture with a smooth power curve and workshop-friendly packaging."
+
+    },
+
+
+    electric: {
+
+        architectures: [
+            "Axial-flux · dual stator",
+            "Radial-flux · single rotor",
+            "Dual-motor · torque vectoring"
+        ],
+
+        delivery: [
+            "Direct shaft drive",
+            "Single-speed reduction",
+            "Two-stage reduction"
+        ],
+
+        cooling: [
+            "Liquid stator cooling",
+            "Oil-cooled rotor",
+            "Liquid loop · plate exchanger"
+        ],
+
+        control: [
+            "Field-oriented controller",
+            "Adaptive inverter",
+            "Torque-vector controller"
+        ],
+
+        baseTorque: 2.8,
+
+        rpm: 7200,
+
+        text:
+            "Quiet high-torque motor concept designed around simple service access and responsive control."
+
+    },
+
+
+    turbine: {
+
+        architectures: [
+            "Single-spool microturbine",
+            "Twin-spool compact turbine",
+            "Radial inflow turbine"
+        ],
+
+        delivery: [
+            "Direct shaft drive",
+            "Reduction gearbox",
+            "Free turbine output"
+        ],
+
+        cooling: [
+            "Regenerative air loop",
+            "Liquid bearing cooling",
+            "Ceramic heat shield"
+        ],
+
+        control: [
+            "Digital fuel governor",
+            "Adaptive speed governor",
+            "Closed-loop turbine ECU"
+        ],
+
+        baseTorque: 1.35,
+
+        rpm: 12500,
+
+        text:
+            "Compact turbine concept prioritizing smooth rotational power, thermal management, and modularity."
+
+    },
+
+
+    robot: {
+
+        architectures: [
+            "Four-bar linkage",
+            "Six-axis articulated arm",
+            "Parallel delta mechanism",
+            "Modular linear actuator"
+        ],
+
+        delivery: [
+            "Planetary gearbox",
+            "Timing-belt reduction",
+            "Harmonic drive"
+        ],
+
+        cooling: [
+            "Passive aluminum frame",
+            "Liquid motor loop",
+            "Forced-air duct"
+        ],
+
+        control: [
+            "Adaptive motion controller",
+            "PID servo controller",
+            "Vision-assisted controller"
+        ],
+
+        baseTorque: 3.15,
+
+        rpm: 3600,
+
+        text:
+            "A modular robotic mechanism with deliberately accessible joints, adjustable gearing, and calm motion."
+
+    },
+
+
+    vehicle: {
+
+        architectures: [
+            "Rear-wheel drive powertrain",
+            "Compact AWD module",
+            "Front transaxle"
+        ],
+
+        delivery: [
+            "Two-speed reduction",
+            "Six-speed gearbox",
+            "Single-speed direct drive"
+        ],
+
+        cooling: [
+            "Liquid loop · front radiator",
+            "Dual-loop cooling",
+            "Compact thermal module"
+        ],
+
+        control: [
+            "Traction-aware controller",
+            "Adaptive ECU",
+            "Torque-vector controller"
+        ],
+
+        baseTorque: 2.55,
+
+        rpm: 5100,
+
+        text:
+            "Vehicle-ready power system balancing packaging, usable torque, thermal headroom, and serviceability."
+
+    },
+
+
+    custom: {
+
+        architectures: [
+            "Modular experimental core",
+            "Hybrid mechanical assembly",
+            "Custom freeform mechanism",
+            "Interchangeable drive module"
+        ],
+
+        delivery: [
+            "User-defined gearing",
+            "Modular belt drive",
+            "Direct mechanical coupling"
+        ],
+
+        cooling: [
+            "Passive thermal frame",
+            "Liquid loop",
+            "Forced-air duct"
+        ],
+
+        control: [
+            "Open-loop control",
+            "Adaptive controller",
+            "Manual/mechanical control"
+        ],
+
+        baseTorque: 2,
+
+        rpm: 4200,
+
+        text:
+            "A blank-sheet mechanism. There are no assumptions about what it should be — only what you want it to do."
+
+    }
+
+};
+
+
+/* ---------------------------------------------------------
+   GLOBAL STATE
+--------------------------------------------------------- */
+
+let powerSource = "petrol";
+
+
+/* ---------------------------------------------------------
+   NAVIGATION
+--------------------------------------------------------- */
+
+function scrollToBuilder() {
+
+    document
+        .getElementById("workshop")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+
+}
+
+function scrollToSection(id) {
+
+    document
+        .getElementById(id)
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+
+}
+
+
+/* ---------------------------------------------------------
+   POWER SOURCE BUTTONS
+--------------------------------------------------------- */
+
+document
+    .querySelectorAll(".choice")
+    .forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            document
+                .querySelectorAll(".choice")
+                .forEach(b => {
+                    b.classList.remove("active");
+                });
+
+            button.classList.add("active");
+
+            powerSource = button.dataset.value;
+
+            generateConcept();
+
+        });
+
+    });
+
+
+/* ---------------------------------------------------------
+   SLIDERS
+--------------------------------------------------------- */
+
+$("complexity").addEventListener(
+    "input",
+    event => {
+
+        $("complexityValue").textContent =
+            event.target.value + "%";
+
+        generateConcept();
+
+    }
+);
+
+
+$("power").addEventListener(
+    "input",
+    event => {
+
+        $("powerValue").textContent =
+            event.target.value;
+
+        generateConcept();
+
+    }
+);
+
+
+/* ---------------------------------------------------------
+   PROJECT NAME
+--------------------------------------------------------- */
+
+$("projectName").addEventListener(
+    "input",
+    () => {
+
+        $("outputTitle").textContent =
+            $("projectName").value ||
+            "Untitled Lemon";
+
+    }
+);
+
+
+/* ---------------------------------------------------------
+   MACHINE TYPE
+--------------------------------------------------------- */
+
+$("machineType").addEventListener(
+    "change",
+    generateConcept
+);
+
+
+/* ---------------------------------------------------------
+   GENERATE BUTTON
+--------------------------------------------------------- */
+
+$("generateBtn").addEventListener(
+    "click",
+    () => {
+
+        generateConcept();
+
+        $("projectStatus").textContent =
+            "● CONCEPT UPDATED";
+
+        setTimeout(() => {
+
+            $("projectStatus").textContent =
+                "● READY";
+
+        }, 1600);
+
+    }
+);
+
+
+/* ---------------------------------------------------------
+   RANDOM ARRAY PICKER
+--------------------------------------------------------- */
+
+function pick(array, seed) {
+
+    return array[
+        Math.abs(
+            Math.floor(seed)
+        ) % array.length
+    ];
+
+}
+
+
+/* ---------------------------------------------------------
+   CONCEPT GENERATOR
+--------------------------------------------------------- */
+
+function generateConcept() {
+
+    const type =
+        $("machineType").value;
+
+    const power =
+        Number($("power").value);
+
+    const complexity =
+        Number($("complexity").value);
+
+    const data =
+        machineData[type];
+
+
+    const sourceFactor = {
+
+        petrol: 1,
+
+        battery: 1.12,
+
+        hybrid: 1.08,
+
+        steam: .86
+
+    }[powerSource];
+
+
+    const efficiency =
+        Math.min(
+            98,
+            Math.round(
+                75 +
+                complexity * .18 +
+                sourceFactor * 4
+            )
+        );
+
+
+    const torque =
+        Math.round(
+            power *
+            data.baseTorque *
+            (
+                .78 +
+                complexity / 250
+            )
+        );
+
+
+    const rpm =
+        Math.round(
+            data.rpm *
+            (
+                .72 +
+                complexity / 360
+            )
+        );
+
+
+    $("outputTitle").textContent =
+        $("projectName").value ||
+        "Untitled Lemon";
+
+
+    $("efficiency").textContent =
+        efficiency;
+
+
+    $("outputPower").textContent =
+        power + " kW";
+
+
+    $("outputTorque").textContent =
+        torque + " Nm";
+
+
+    $("outputRpm").textContent =
+        rpm.toLocaleString();
+
+
+    $("architecture").textContent =
+        pick(
+            data.architectures,
+            complexity + power
+        );
+
+
+    $("delivery").textContent =
+        pick(
+            data.delivery,
+            power + complexity * 2
+        );
+
+
+    $("cooling").textContent =
+        pick(
+            data.cooling,
+            complexity + 3
+        );
+
+
+    $("control").textContent =
+        pick(
+            data.control,
+            power + 8
+        );
+
+
+    $("conceptText").textContent =
+        data.text +
+        ` ${powerSource[0].toUpperCase() +
+        powerSource.slice(1)}
+        input selected with
+        ${complexity}% design complexity.`;
+
+}
+
+
+/* ---------------------------------------------------------
+   QUICK BUILD BUTTONS
+--------------------------------------------------------- */
+
+function quickBuild(type) {
+
+    $("machineType").value =
+        type;
+
+
+    if (type === "engine") {
+
+        $("projectName").value =
+            "Lemon Engine 01";
+
+    }
+
+    else if (type === "robot") {
+
+        $("projectName").value =
+            "Lemon Mechanism 01";
+
+    }
+
+    else {
+
+        $("projectName").value =
+            "Lemon Oddity 01";
+
+    }
+
+
+    generateConcept();
+
+    scrollToBuilder();
+
+}
+
+
+/* ---------------------------------------------------------
+   COPY CONCEPT
+--------------------------------------------------------- */
+
+async function copyConcept() {
+
+    const text = `
+
+${$("outputTitle").textContent}
+
+${$("conceptText").textContent}
+
+Output:
+${$("outputPower").textContent}
+
+Torque:
+${$("outputTorque").textContent}
+
+RPM:
+${$("outputRpm").textContent}
+
+Architecture:
+${$("architecture").textContent}
+
+Power delivery:
+${$("delivery").textContent}
+
+Cooling:
+${$("cooling").textContent}
+
+Control:
+${$("control").textContent}
+
+`;
+
+
+    try {
+
+        await navigator.clipboard.writeText(text);
+
+        showToast(
+            "Concept copied to clipboard."
+        );
+
+    }
+
+    catch {
+
+        showToast(
+            "Concept ready — clipboard access is unavailable."
+        );
+
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   TOAST
+--------------------------------------------------------- */
+
+function showToast(message) {
+
+    const toast =
+        $("toast");
+
+    toast.textContent =
+        message;
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    }, 2200);
+
+}
+
+
+/* ---------------------------------------------------------
+   BLUEPRINT DOWNLOAD
+--------------------------------------------------------- */
+
+function downloadBlueprint() {
+
+    const data = `
+
+LEMON SHARK / BLUEPRINT 004
+
+Project:
+${$("projectName").value || "Lemon Prototype 01"}
+
+Machine:
+${$("machineType").value}
+
+Power source:
+${powerSource}
+
+Power target:
+${$("power").value} kW
+
+Complexity:
+${$("complexity").value}%
+
+Architecture:
+${$("architecture").textContent}
+
+Power delivery:
+${$("delivery").textContent}
+
+Cooling:
+${$("cooling").textContent}
+
+Control:
+${$("control").textContent}
+
+Estimated efficiency:
+${$("efficiency").textContent}%
+
+Torque:
+${$("outputTorque").textContent}
+
+RPM:
+${$("outputRpm").textContent}
+
+`;
+
+
+    const blob =
+        new Blob(
+            [data],
+            {
+                type: "text/plain"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+
+    const a =
+        document.createElement("a");
+
+
+    a.href = url;
+
+    a.download =
+        "lemon-shark-blueprint.txt";
+
+
+    a.click();
+
+
+    URL.revokeObjectURL(url);
+
+
+    showToast(
+        "Blueprint saved."
+    );
+
+}
+
+
+/* ---------------------------------------------------------
+   INITIAL BUILD
+--------------------------------------------------------- */
+
+generateConcept();
+
+</script>
+
+</body>
+</html>
